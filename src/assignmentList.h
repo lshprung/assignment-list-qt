@@ -14,8 +14,6 @@ class AssignmentList : public QMainWindow {
 		Ui::MainWindow ui;
 
 		void initializeUI();
-		void createMenu();
-		void createToolbar();
 		void setupDB();
 		void displayWidgets();
 		void editGroup(int id);

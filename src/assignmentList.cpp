@@ -21,25 +21,21 @@ AssignmentList::AssignmentList() {
 }
 
 void AssignmentList::initializeUI() {
-	this->createMenu();
-	this->createToolbar();
-	//Config() // from config.h
-	this->setupDB();
-	this->displayWidgets();
-	this->show();
-}
-
-void AssignmentList::createMenu() {
+	// create menu connections
 	QObject::connect(ui.actionPreferences, &QAction::triggered, this, &AssignmentList::preferences);
 	QObject::connect(ui.actionReload, &QAction::triggered, this, &AssignmentList::reload);
 	QObject::connect(ui.actionExit, &QAction::triggered, this, QApplication::quit);
 	QObject::connect(ui.actionAdd_Group, &QAction::triggered, this, &AssignmentList::addGroup);
 	QObject::connect(ui.actionClean_Hidden, &QAction::triggered, this, &AssignmentList::cleanHidden);
 	QObject::connect(ui.actionAbout, &QAction::triggered, this, &AssignmentList::aboutDialog);
-}
 
-void AssignmentList::createToolbar() {
+	// create toolbar
 	ui.toolBar->addAction(ui.actionAdd_Group);
+
+	//Config() // from config.h
+	this->setupDB();
+	this->displayWidgets();
+	this->show();
 }
 
 void AssignmentList::setupDB() {
