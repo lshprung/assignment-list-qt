@@ -2,17 +2,22 @@
 #define ASSIGNMENTLIST_H
 
 #include <QMainWindow>
-#include "ui_main.h"
+#include <QSettings>
+
+#include "ui_assignmentList.h"
 
 class AssignmentList : public QMainWindow {
 	Q_OBJECT
 
 	public:
+		QSettings configuration;
+
 		AssignmentList();
 
 	private:
 		Ui::MainWindow ui;
 
+		void initializeSettings();
 		void initializeUI();
 		void setupDB();
 		void displayWidgets();

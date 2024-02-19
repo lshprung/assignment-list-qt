@@ -1,23 +1,41 @@
 #include <QAction>
 #include <QApplication>
+#include <QCoreApplication>
 #include <QDate>
 #include <QFile>
 #include <QMessageBox>
 #include <QObject>
+#include <QStandardPaths>
 #include <QUiLoader>
 
 #include <QDebug>
+#include <QSettings>
 
 #include "assignmentList.h"
+#include "settings.h"
 
 AssignmentList::AssignmentList() {
+	// set QSettings information
+	QCoreApplication::setOrganizationName("assignment-list-qt"); // TODO grab this from a config.h type file
+	QCoreApplication::setApplicationName("assignment-list-qt"); // TODO grab this from a config.h type file
+
+	// ensure QSettings location exists
+	this->initializeSettings();
+
 	// load uic
-	QFile file("/home/louie/Development/projects/assignment-list-qt/src/main.ui");
-	file.open(QIODevice::ReadOnly);
-	QUiLoader loader;
 	ui.setupUi(this);
 
 	this->initializeUI();
+}
+
+void AssignmentList::initializeSettings() {
+	QSettings settings;
+	QFile path = settings.fileName();
+
+	if(!path.exists()) {
+		qDebug() << "Creating Config";
+		Settings::createConfig();
+	}
 }
 
 void AssignmentList::initializeUI() {

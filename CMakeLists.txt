@@ -35,9 +35,11 @@ set(project_sources
 	"src/add_group_form.ui"
 	"src/assignmentList.cpp"
 	"src/assignmentList.h"
+	"src/assignmentList.ui"
 	"src/main.cpp"
-	"src/main.ui"
 	"src/preferences_dialog.ui"
+	"src/settings.cpp"
+	"src/settings.h"
 )
 
 add_executable(assignment-list
