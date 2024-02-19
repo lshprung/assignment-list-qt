@@ -49,7 +49,7 @@ void AssignmentList::setupDB() {
 void AssignmentList::displayWidgets() {
 	QDate today = QDate::currentDate();
 	ui.title->setText(today.toString("dddd, MMM d yyyy"));
-	this->drawGroups();
+	//this->drawGroups();
 }
 
 // Open the 'addGroup' form
