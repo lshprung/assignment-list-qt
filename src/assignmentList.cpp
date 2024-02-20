@@ -24,7 +24,6 @@ AssignmentList::AssignmentList() {
 
 	// load uic
 	ui.setupUi(this);
-
 	this->initializeUI();
 }
 
@@ -50,8 +49,8 @@ void AssignmentList::initializeUI() {
 	// create toolbar
 	ui.toolBar->addAction(ui.actionAdd_Group);
 
-	//Config() // from config.h
 	this->setupDB();
+	this->displayDate();
 	this->displayWidgets();
 	this->show();
 }
@@ -60,9 +59,12 @@ void AssignmentList::setupDB() {
 	qDebug() << "WIP";
 }
 
-void AssignmentList::displayWidgets() {
+void AssignmentList::displayDate() {
 	QDate today = QDate::currentDate();
 	ui.title->setText(today.toString("dddd, MMM d yyyy"));
+}
+
+void AssignmentList::displayWidgets() {
 	//this->drawGroups();
 }
 

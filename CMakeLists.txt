@@ -36,6 +36,8 @@ set(project_sources
 	"src/assignmentList.cpp"
 	"src/assignmentList.h"
 	"src/assignmentList.ui"
+	"src/group.cpp"
+	"src/group.h"
 	"src/main.cpp"
 	"src/preferences_dialog.ui"
 	"src/settings.cpp"

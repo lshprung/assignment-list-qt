@@ -20,6 +20,7 @@ class AssignmentList : public QMainWindow {
 		void initializeSettings();
 		void initializeUI();
 		void setupDB();
+		void displayDate();
 		void displayWidgets();
 		void editGroup(int id);
 		void removeGroup(int id);
