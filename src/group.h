@@ -12,7 +12,13 @@ class Group : QVBoxLayout {
 		QString link;
 		bool hidden;
 
-		Group(int id, QString name, QString column = "left", QString link = "", bool hidden = false);
+		Group(
+				int id, 
+				QString name, 
+				QString column = "left", 
+				QString link = "", 
+				bool hidden = false
+			 );
 };
 
 #endif
