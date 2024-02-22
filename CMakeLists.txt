@@ -42,6 +42,8 @@ set(project_sources
 	"src/group.h"
 	"src/main.cpp"
 	"src/preferences_dialog.ui"
+	"src/rule.cpp"
+	"src/rule.h"
 	"src/settings.cpp"
 	"src/settings.h"
 )
