@@ -9,9 +9,11 @@
 #include <QUiLoader>
 
 #include <QDebug>
+#include <QErrorMessage>
 #include <QSettings>
 
 #include "assignmentList.h"
+#include "backend/db_sqlite.h"
 #include "settings.h"
 
 AssignmentList::AssignmentList() {
@@ -56,6 +58,7 @@ void AssignmentList::initializeUI() {
 }
 
 void AssignmentList::setupDB() {
+	BackendDB::init();
 	qDebug() << "WIP";
 }
 

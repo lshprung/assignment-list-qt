@@ -12,7 +12,7 @@ set(CMAKE_AUTOUIC ON)
 option(USE_QT5 "Use Qt5, instead of Qt6" no)
 option(USE_QT6 "Use Qt6, instead of Qt5" no)
 
-set(qt_components "Core" "Gui" "UiTools" "Widgets")
+set(qt_components "Core" "Gui" "Sql" "UiTools" "Widgets")
 set(qt_names "Qt6" "Qt5")
 if(USE_QT5)
 	set(qt_names "Qt5")
@@ -33,6 +33,8 @@ endforeach()
 set(project_sources
 	"src/add_entry_form.ui"
 	"src/add_group_form.ui"
+	"src/backend/db_sqlite.cpp"
+	"src/backend/db_sqlite.h"
 	"src/assignmentList.cpp"
 	"src/assignmentList.h"
 	"src/assignmentList.ui"
