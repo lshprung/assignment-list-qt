@@ -9,9 +9,8 @@
 // TODO determine whether an alternative approach is better (same goes for group and entry)
 
 class Rule : QHBoxLayout {
-	enum When { before, after };
-
 	public:
+		enum When { before, after };
 		int id;
 		int entry_id;
 		When when;

@@ -4,21 +4,40 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <QSqlDatabase>
+#include <QSqlField>
 #include <QSqlQuery>
-#include <QVariant>
+#include <QSqlRecord>
 
 #include <QSqlError>
 
 #include "db_sqlite.h"
 
-QString BackendDB::getDBPath() {
+QString getDBPath();
+QSqlDatabase openDB();
+
+QString getDBPath() {
 	QSettings settings;
 	settings.beginGroup("paths");
 	return settings.value("db_path").toString();
 }
 
+
+QSqlDatabase openDB() {
+	QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
+	database.setDatabaseName(getDBPath());
+
+	database.open();
+	if(database.isOpenError()) {
+		// FIXME end-user friendly error message
+		qDebug() << database.lastError();
+		std::exit(1);
+	}
+
+	return database;
+}
+
 void BackendDB::init() {
-	QString db_path(BackendDB::getDBPath());
+	QString db_path(getDBPath());
 	int i;
 
 	// Check if database already exists
@@ -34,17 +53,7 @@ void BackendDB::init() {
 	}
 
 	// Create database
-	QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
-	database.setDatabaseName(db_path);
-
-	// TODO see if explicitly creating the parent directory is necessary
-	database.open();
-	if(database.isOpenError()) {
-		// FIXME end-user friendly error message
-		qDebug() << database.lastError();
-		std::exit(1);
-	}
-
+	QSqlDatabase database = openDB();
 	QSqlQuery query;
 
 	// Erase database contents so that we don't have duplicates
@@ -58,4 +67,70 @@ void BackendDB::init() {
 	qDebug() << database.lastError();
 
 	database.close();
+}
+
+// load groups
+QList<Group *> BackendDB::loadGroups() {
+	QSqlDatabase database = openDB();
+	QSqlQuery query;
+	QList<Group *> output;
+
+	query.exec("SELECT * FROM groups");
+	while(query.next()) {
+		output.append(new Group(
+					query.record().field("id").value().toInt(),
+					query.record().field("name").value().toString(),
+					query.record().field("column").value().toString(),
+					query.record().field("link").value().toString(),
+					query.record().field("hidden").value().toBool()));
+	}
+
+	database.close();
+	return output;
+}
+
+// load entries
+QList<Entry *> loadEntries() {
+	QSqlDatabase database = openDB();
+	QSqlQuery query;
+	QList<Entry *> output;
+
+	query.exec("SELECT * FROM groups");
+	while(query.next()) {
+		output.append(new Entry(
+					query.record().field("id").value().toInt(),
+					query.record().field("parent_id").value().toInt(),
+					query.record().field("description").value().toString(),
+					query.record().field("due_date").value().toDateTime(),
+					query.record().field("alt_due_date").value().toString(),
+					query.record().field("link").value().toUrl(),
+					query.record().field("color").value().toString(),
+					query.record().field("highlight").value().toString(),
+					query.record().field("done").value().toBool(),
+					query.record().field("hidden").value().toBool()));
+	}
+
+	database.close();
+	return output;
+}
+
+// load entries
+QList<Rule *> loadRules() {
+	QSqlDatabase database = openDB();
+	QSqlQuery query;
+	QList<Rule *> output;
+
+	query.exec("SELECT * FROM groups");
+	while(query.next()) {
+		output.append(new Rule(
+					query.record().field("id").value().toInt(),
+					query.record().field("entry_id").value().toInt(),
+					(Rule::When) query.record().field("before_after").value().toInt(),
+					query.record().field("date").value().toDateTime(),
+					query.record().field("color").value().toString(),
+					query.record().field("highlight").value().toString()));
+	}
+
+	database.close();
+	return output;
 }

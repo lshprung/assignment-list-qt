@@ -51,15 +51,12 @@ void AssignmentList::initializeUI() {
 	// create toolbar
 	ui.toolBar->addAction(ui.actionAdd_Group);
 
-	this->setupDB();
+	// setup database
+	BackendDB::init();
+
 	this->displayDate();
 	this->displayWidgets();
 	this->show();
-}
-
-void AssignmentList::setupDB() {
-	BackendDB::init();
-	qDebug() << "WIP";
 }
 
 void AssignmentList::displayDate() {
@@ -68,7 +65,24 @@ void AssignmentList::displayDate() {
 }
 
 void AssignmentList::displayWidgets() {
-	//this->drawGroups();
+	QVBoxLayout *column_left = new QVBoxLayout();
+	QVBoxLayout *column_right = new QVBoxLayout();
+	QList<Group *> groups = BackendDB::loadGroups();
+	int i;
+
+	for(i = 0; i < groups.size(); ++i) {
+		if(groups[i]->hidden) continue;
+		// TODO set right click behavior
+		// TODO add entries to this layout
+		if(groups[i]->column.toLower() == "left") column_left->addLayout(groups[i]);
+		else column_right->addLayout(groups[i]);
+	}
+
+	column_left->addStretch();
+	column_right->addStretch();
+
+	ui.groups_layout->addLayout(column_left, 0, 0);
+	ui.groups_layout->addLayout(column_right, 0, 1);
 }
 
 // Open the 'addGroup' form

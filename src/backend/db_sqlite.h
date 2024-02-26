@@ -4,6 +4,10 @@
 #include <QString>
 #include <QStringList>
 
+#include "../entry.h"
+#include "../group.h"
+#include "../rule.h"
+
 namespace BackendDB {
 	const QStringList create_table_queries = {
 		"CREATE TABLE groups ("
@@ -35,9 +39,10 @@ namespace BackendDB {
 			")"
 	};
 
-	QString getDBPath();
 	void init();
-	void load();
+	QList<Group *> loadGroups();
+	QList<Entry *> loadEntries();
+	QList<Rule *> loadRules();
 	void insertGroup(int new_group); // param datatype TBD
 	void insertEntry(int new_entry); // param datatype TBD
 	void insertRule(int new_rule); // param datatype TBD

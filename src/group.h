@@ -4,7 +4,7 @@
 #include <QString>
 #include <QVBoxLayout>
 
-class Group : QVBoxLayout {
+class Group : public QVBoxLayout {
 	public:
 		int id;
 		QString name;
