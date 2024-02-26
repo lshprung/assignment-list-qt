@@ -32,6 +32,8 @@ endforeach()
 
 set(project_sources
 	"src/add_entry_form.ui"
+	"src/add_group_form.cpp"
+	"src/add_group_form.h"
 	"src/add_group_form.ui"
 	"src/backend/db_sqlite.cpp"
 	"src/backend/db_sqlite.h"

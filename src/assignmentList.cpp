@@ -12,6 +12,7 @@
 #include <QErrorMessage>
 #include <QSettings>
 
+#include "add_group_form.h"
 #include "assignmentList.h"
 #include "backend/db_sqlite.h"
 #include "settings.h"
@@ -87,7 +88,8 @@ void AssignmentList::displayWidgets() {
 
 // Open the 'addGroup' form
 void AssignmentList::addGroup() {
-	qDebug() << "WIP";
+	AddGroupForm create_new_group_dialog;
+	create_new_group_dialog.exec();
 }
 
 // Open the 'editGroup; form
