@@ -1,30 +1,33 @@
 #include <QMessageBox>
 
+#include <QDebug>
+
 #include "add_group_form.h"
+#include "backend/db_sqlite.h"
 
 AddGroupForm::AddGroupForm() {
 	// load uic
 	ui.setupUi(this);
-
-	// setup dialog button connections
-	QObject::connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-	QObject::connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &AddGroupForm::handleSubmit);
 }
 
-void AddGroupForm::handleSubmit() {
+void AddGroupForm::accept() {
 	QString name_text = ui.new_group_name->text();
 	QString column_text = ui.new_group_column->currentText();
 	QString link_text = ui.new_group_link->text();
 	QMessageBox error_message;
+	int new_id;
 
 	if(name_text.isEmpty()) {
+		qDebug() << "Gets here";
 		error_message.setIcon(QMessageBox::Warning);
 		error_message.setWindowTitle("Error Message");
 		error_message.setText("Name cannot be blank");
-		error_message.setParent(this);
-		error_message.show();
+		error_message.exec();
+		return;
 	}
 
-	// TODO insert into database
-	this->close();
+	new_id = BackendDB::insertGroup(Group(0, name_text, column_text, link_text));
+	// TODO redraw the main window
+
+	QDialog::accept();
 }

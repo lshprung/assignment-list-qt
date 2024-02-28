@@ -8,6 +8,8 @@
 #include "../group.h"
 #include "../rule.h"
 
+// TODO rewrite to be a class (see difference between ::addDatabase and ::database)
+
 namespace BackendDB {
 	const QStringList create_table_queries = {
 		"CREATE TABLE groups ("
@@ -43,9 +45,9 @@ namespace BackendDB {
 	QList<Group *> loadGroups();
 	QList<Entry *> loadEntries();
 	QList<Rule *> loadRules();
-	void insertGroup(int new_group); // param datatype TBD
-	void insertEntry(int new_entry); // param datatype TBD
-	void insertRule(int new_rule); // param datatype TBD
+	int insertGroup(const Group &new_group); // param datatype TBD
+	int insertEntry(int new_entry); // param datatype TBD
+	int insertRule(int new_rule); // param datatype TBD
 	void updateGroup(int group); // param datatype TBD
 	void updateEntry(int entry); // param datatype TBD
 	void updateRule(int rule); // param datatype TBD

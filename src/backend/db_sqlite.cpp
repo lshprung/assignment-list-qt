@@ -91,7 +91,7 @@ QList<Group *> BackendDB::loadGroups() {
 }
 
 // load entries
-QList<Entry *> loadEntries() {
+QList<Entry *> BackendDB::loadEntries() {
 	QSqlDatabase database = openDB();
 	QSqlQuery query;
 	QList<Entry *> output;
@@ -116,7 +116,7 @@ QList<Entry *> loadEntries() {
 }
 
 // load entries
-QList<Rule *> loadRules() {
+QList<Rule *> BackendDB::loadRules() {
 	QSqlDatabase database = openDB();
 	QSqlQuery query;
 	QList<Rule *> output;
@@ -132,6 +132,23 @@ QList<Rule *> loadRules() {
 					query.record().field("highlight").value().toString()));
 	}
 
+	database.close();
+	return output;
+}
+
+// insert group to the database (returns 0 if failed)
+int BackendDB::insertGroup(const Group &new_group) {
+	QSqlDatabase database = openDB();
+	QSqlQuery query;
+	int output;
+
+	query.prepare("INSERT INTO groups (name, column, link) VALUES (?, ?, ?)");
+	query.bindValue(0, new_group.name);
+	query.bindValue(1, new_group.column);
+	query.bindValue(2, new_group.link);
+	query.exec();
+
+	output = query.lastInsertId().toInt();
 	database.close();
 	return output;
 }

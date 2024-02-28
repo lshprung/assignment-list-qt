@@ -13,7 +13,7 @@ class AddGroupForm : public QDialog {
 		Ui::Dialog ui;
 
 	private slots:
-		void handleSubmit();
+		void accept();
 };
 
 #endif
