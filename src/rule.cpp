@@ -13,12 +13,15 @@ Rule::Rule(int id, int entry_id, When when, QDateTime date, QString color, QStri
 	color(color),
 	highlight(highlight)
 {
-	QComboBox *when_widget;
+	QComboBox *when_widget = new QComboBox;
 	QDateTimeEdit *date_widget = new QDateTimeEdit(QDate::currentDate());
-	QLineEdit *color_widget; // TODO consider making this a color selector widget
-	QLineEdit *highlight_widget; // TODO consider making this a color selector widget
+	QLineEdit *color_widget = new QLineEdit; // TODO consider making this a color selector widget
+	QLineEdit *highlight_widget = new QLineEdit; // TODO consider making this a color selector widget
 
-	when_widget->addItems(QStringList("Before", "After"));
+	QStringList when_options;
+	when_options.append("Before");
+	when_options.append("After");
+	when_widget->addItems(when_options);
 	when_widget->setCurrentIndex(this->when);
 	this->addWidget(when_widget);
 
