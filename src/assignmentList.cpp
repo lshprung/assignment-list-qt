@@ -71,6 +71,9 @@ void AssignmentList::displayWidgets() {
 	QList<Group *> groups = BackendDB::loadGroups();
 	int i;
 
+	// clear out old layouts if they exist
+	this->recursiveClear(ui.groups_layout);
+
 	for(i = 0; i < groups.size(); ++i) {
 		if(groups[i]->hidden) continue;
 		// TODO set right click behavior
@@ -89,7 +92,8 @@ void AssignmentList::displayWidgets() {
 // Open the 'addGroup' form
 void AssignmentList::addGroup() {
 	AddGroupForm create_new_group_dialog;
-	create_new_group_dialog.exec();
+	if(create_new_group_dialog.exec() == QDialog::Accepted)
+		this->displayWidgets();
 }
 
 // Open the 'editGroup; form
@@ -112,4 +116,13 @@ void AssignmentList::cleanHidden() {
 void AssignmentList::aboutDialog() {
 	QMessageBox about;
 	about.about(this, "About Assignment List", "Created by Louie S. - 2023");
+}
+
+void AssignmentList::recursiveClear(QLayout *layout) {
+	QLayoutItem *child;
+	while((child = layout->takeAt(0)) != nullptr) {
+		if(child->layout()) this->recursiveClear(child->layout());
+		delete child->widget();
+		delete child;
+	}
 }
