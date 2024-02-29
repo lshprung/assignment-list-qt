@@ -52,9 +52,6 @@ void AssignmentList::initializeUI() {
 	// create toolbar
 	ui.toolBar->addAction(ui.actionAdd_Group);
 
-	// setup database
-	BackendDB::init();
-
 	this->displayDate();
 	this->displayWidgets();
 	this->show();
@@ -68,7 +65,8 @@ void AssignmentList::displayDate() {
 void AssignmentList::displayWidgets() {
 	QVBoxLayout *column_left = new QVBoxLayout();
 	QVBoxLayout *column_right = new QVBoxLayout();
-	QList<Group *> groups = BackendDB::loadGroups();
+	BackendDB database;
+	QList<Group *> groups = database.loadGroups();
 	int i;
 
 	// clear out old layouts if they exist
