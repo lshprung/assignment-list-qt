@@ -94,11 +94,6 @@ void AssignmentList::addGroup() {
 		this->displayWidgets();
 }
 
-// Open the 'editGroup; form
-void AssignmentList::editGroup(int id) {
-	qDebug() << "WIP";
-}
-
 void AssignmentList::preferences() {
 	qDebug() << "WIP";
 }

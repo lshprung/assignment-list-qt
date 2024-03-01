@@ -21,10 +21,6 @@ class AssignmentList : public QMainWindow {
 		void initializeUI();
 		void displayDate();
 		void displayWidgets();
-		void editGroup(int id);
-		void removeGroup(int id);
-		void groupContextMenu(int group_id);
-		void addEntry(int parent); // TODO figure out type for parameter
 		void editEntry(int id);
 		void toggleDoneEntry(int id);
 		void removeEntry(int id);

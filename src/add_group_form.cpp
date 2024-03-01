@@ -28,7 +28,6 @@ void AddGroupForm::accept() {
 	}
 
 	new_id = database.insertGroup(Group(0, name_text, column_text, link_text));
-	// TODO redraw the main window
 
 	QDialog::accept();
 }
