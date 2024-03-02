@@ -14,9 +14,10 @@ class BackendDB : QSqlDatabase {
 		BackendDB();
 		QList<Group *> loadGroups();
 		QList<Entry *> loadEntries();
+		QList<Entry *> loadEntries(int parent_id);
 		QList<Rule *> loadRules();
 		int insertGroup(const Group &new_group);
-		int insertEntry(int new_entry); // param datatype TBD
+		int insertEntry(const Entry &new_entry);
 		int insertRule(int new_rule); // param datatype TBD
 		void updateGroup(int group); // param datatype TBD
 		void updateEntry(int entry); // param datatype TBD

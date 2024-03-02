@@ -77,7 +77,36 @@ QList<Entry *> BackendDB::loadEntries() {
 		QSqlDatabase database(this->openDB());
 		QSqlQuery query;
 
-		query.exec("SELECT * FROM groups");
+		query.exec("SELECT * FROM entries");
+		while(query.next()) {
+			output.append(new Entry(
+						query.record().field("id").value().toInt(),
+						query.record().field("parent_id").value().toInt(),
+						query.record().field("description").value().toString(),
+						query.record().field("due_date").value().toDateTime(),
+						query.record().field("alt_due_date").value().toString(),
+						query.record().field("link").value().toUrl(),
+						query.record().field("color").value().toString(),
+						query.record().field("highlight").value().toString(),
+						query.record().field("done").value().toBool(),
+						query.record().field("hidden").value().toBool()));
+		}
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	return output;
+}
+
+QList<Entry *> BackendDB::loadEntries(int parent_id) {
+	QList<Entry *> output;
+
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		query.prepare("SELECT * FROM entries WHERE parent_id = ?");
+		query.bindValue(0, parent_id);
+		query.exec();
 		while(query.next()) {
 			output.append(new Entry(
 						query.record().field("id").value().toInt(),
@@ -133,6 +162,31 @@ int BackendDB::insertGroup(const Group &new_group) {
 		query.bindValue(0, new_group.name);
 		query.bindValue(1, new_group.column);
 		query.bindValue(2, new_group.link);
+		query.exec();
+
+		output = query.lastInsertId().toInt();
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	return output;
+}
+
+// insert group to the database (returns 0 if failed)
+int BackendDB::insertEntry(const Entry &new_entry) {
+	int output;
+
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		query.prepare("INSERT INTO entries (parent_id, description, due_date, alt_due_date, link, color, highlight) VALUES (:p_id, :desc, :due, :alt_due, :link, :color, :highlight)");
+		query.bindValue(":p_id", new_entry.parent_id);
+		query.bindValue(":desc", new_entry.desc);
+		query.bindValue(":due", new_entry.due.toString("yyyy-MM-dd"));
+		query.bindValue(":alt_due", new_entry.due_alt);
+		query.bindValue(":link", new_entry.link);
+		query.bindValue(":color", new_entry.color);
+		query.bindValue(":highlight", new_entry.highlight);
 		query.exec();
 
 		output = query.lastInsertId().toInt();

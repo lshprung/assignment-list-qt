@@ -6,7 +6,7 @@
 #include <QString>
 #include <QUrl>
 
-class Entry : QHBoxLayout {
+class Entry : public QHBoxLayout {
 	public:
 		int id;
 		int parent_id;

@@ -4,7 +4,9 @@
 
 #include <QDebug>
 
+#include "add_entry_form.h"
 #include "group.h"
+#include "lib.h"
 
 Group::Group(int id, QString name, QString column, QString link, bool hidden) :
 	id(id),
@@ -50,7 +52,9 @@ void Group::showContextMenu() {
 }
 
 void Group::addEntry() {
-	qDebug() << "WIP";
+	AddEntryForm create_new_entry_dialog(this->id);
+	if(create_new_entry_dialog.exec() == QDialog::Accepted)
+		getMainWindow()->displayWidgets();
 }
 
 void Group::editGroup() {

@@ -34,18 +34,20 @@ Entry::Entry(int id, int parent_id, QString desc, QDateTime due, QString due_alt
 	// set conditional styling
 	if(this->done) {
 		bullet->setText("\u2713");
+		/*
 		bullet->setStyleSheet(
 				"QLabel {"
 				"	color: green;"
 				"}"
 				);
+		*/
 	}
 	else
 		bullet->setText("- ");
 	this->addWidget(bullet);
 
 	if(!this->due.isNull())
-		body->setText(this->due.toString("M/d/yyyy"));
+		body->setText(this->due.toString("MM/dd/yyyy: "));
 	else if(!this->due_alt.isEmpty())
 		body->setText(this->due_alt + ": ");
 
@@ -63,13 +65,16 @@ Entry::Entry(int id, int parent_id, QString desc, QDateTime due, QString due_alt
 		QFont body_font = body->font();
 		body_font.setStrikeOut(true);
 		body->setFont(body_font);
+		/*
 		body->setStyleSheet(
 				"QLabel {"
 				"	color: green"
 				"}"
 				);
+		*/
 	}
 	else {
+		/*
 		body->setStyleSheet(
 				"QLabel {"
 				"	color: " + (this->color.isEmpty() ? "default" : this->color) + ";"
@@ -77,6 +82,7 @@ Entry::Entry(int id, int parent_id, QString desc, QDateTime due, QString due_alt
 				"	font-weight: " + (this->due.isValid() && this->due <= QDateTime::currentDateTime() ? "bold" : "normal") + ";"
 				";"
 				);
+		*/
 	}
 	this->addWidget(body);
 }

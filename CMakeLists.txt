@@ -31,6 +31,8 @@ foreach(X ${qt_components})
 endforeach()
 
 set(project_sources
+	"src/add_entry_form.cpp"
+	"src/add_entry_form.h"
 	"src/add_entry_form.ui"
 	"src/add_group_form.cpp"
 	"src/add_group_form.h"
@@ -44,6 +46,8 @@ set(project_sources
 	"src/entry.h"
 	"src/group.cpp"
 	"src/group.h"
+	"src/lib.cpp"
+	"src/lib.h"
 	"src/main.cpp"
 	"src/preferences_dialog.ui"
 	"src/rule.cpp"

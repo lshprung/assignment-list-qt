@@ -74,8 +74,7 @@ void AssignmentList::displayWidgets() {
 
 	for(i = 0; i < groups.size(); ++i) {
 		if(groups[i]->hidden) continue;
-		// TODO set right click behavior
-		// TODO add entries to this layout
+		groups[i]->addLayout(this->drawEntries(groups[i]->id)); // add entries to layout
 		if(groups[i]->column.toLower() == "left") column_left->addLayout(groups[i]);
 		else column_right->addLayout(groups[i]);
 	}
@@ -85,6 +84,25 @@ void AssignmentList::displayWidgets() {
 
 	ui.groups_layout->addLayout(column_left, 0, 0);
 	ui.groups_layout->addLayout(column_right, 0, 1);
+}
+
+QVBoxLayout *AssignmentList::drawEntries(int parent_id) {
+	BackendDB database;
+	QList<Entry *> entries = database.loadEntries(parent_id);
+	QVBoxLayout *output = new QVBoxLayout;
+	int i;
+
+	// styling
+	output->setContentsMargins(5, 0, 0, 0);
+
+	for(i = 0; i < entries.size(); ++i) {
+		// skip if this entry is set to hidden
+		if(entries[i]->hidden) continue;
+		// TODO set right click behavior
+		output->addLayout(entries[i]);
+	}
+
+	return output;
 }
 
 // Open the 'addGroup' form

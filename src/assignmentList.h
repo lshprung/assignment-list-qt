@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSettings>
+#include <QVBoxLayout>
 
 #include "ui_assignmentList.h"
 
@@ -13,6 +14,7 @@ class AssignmentList : public QMainWindow {
 		QSettings configuration;
 
 		AssignmentList();
+		void displayWidgets();
 
 	private:
 		Ui::MainWindow ui;
@@ -20,7 +22,7 @@ class AssignmentList : public QMainWindow {
 		void initializeSettings();
 		void initializeUI();
 		void displayDate();
-		void displayWidgets();
+		QVBoxLayout *drawEntries(int parent_id);
 		void editEntry(int id);
 		void toggleDoneEntry(int id);
 		void removeEntry(int id);
