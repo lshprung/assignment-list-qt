@@ -16,6 +16,7 @@ set(qt_components "Core" "Gui" "Sql" "UiTools" "Widgets")
 set(qt_names "Qt6" "Qt5")
 if(USE_QT5)
 	set(qt_names "Qt5")
+	# Requires Qt version >= 5.4
 elseif(USE_QT6)
 	set(qt_names "Qt6")
 endif()
