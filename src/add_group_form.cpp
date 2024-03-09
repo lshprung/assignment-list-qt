@@ -8,12 +8,16 @@
 AddGroupForm::AddGroupForm() {
 	// load uic
 	ui.setupUi(this);
+
+	// set titles
+	this->setWindowTitle("Add Group");
+	ui.title->setText("Add Group");
 }
 
 void AddGroupForm::accept() {
-	QString name_text = ui.new_group_name->text();
-	QString column_text = ui.new_group_column->currentText();
-	QString link_text = ui.new_group_link->text();
+	QString name_text = ui.group_name->text();
+	QString column_text = ui.group_column->currentText();
+	QString link_text = ui.group_link->text();
 	QMessageBox error_message;
 	BackendDB database;
 	int new_id;

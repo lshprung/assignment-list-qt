@@ -11,17 +11,21 @@ AddEntryForm::AddEntryForm(int parent_id) :
 	// load uic
 	ui.setupUi(this);
 
+	// set titles
+	this->setWindowTitle("Add Entry");
+	ui.title->setText("Add Entry");
+
 	// widgets setup
-	ui.new_entry_due->setDate(QDate::currentDate());
+	ui.entry_due->setDate(QDate::currentDate());
 }
 
 void AddEntryForm::accept() {
-	QString desc_text = ui.new_entry_desc->text();
-	QDateTime due_text = ui.new_entry_due->date().startOfDay();
-	QString due_alt_text = ui.new_entry_due_alt->text();
-	QString link_text = ui.new_entry_link->text();
-	QString color_text = ui.new_entry_color->text();
-	QString highlight_text = ui.new_entry_highlight->text();
+	QString desc_text = ui.entry_desc->text();
+	QDateTime due_text = ui.entry_due->date().startOfDay();
+	QString due_alt_text = ui.entry_due_alt->text();
+	QString link_text = ui.entry_link->text();
+	QString color_text = ui.entry_color->text();
+	QString highlight_text = ui.entry_highlight->text();
 	QMessageBox error_message;
 	BackendDB database;
 	int new_id;
@@ -36,7 +40,7 @@ void AddEntryForm::accept() {
 	}
 
 	// replace due_text with null date if due_checkbox is unchecked
-	if(!ui.new_entry_due_checkbox->isChecked())
+	if(!ui.entry_due_checkbox->isChecked())
 		due_text = QDateTime();
 
 	new_id = database.insertEntry(Entry(0, this->parent_id, desc_text, due_text, due_alt_text, link_text, color_text, highlight_text));

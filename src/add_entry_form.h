@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "ui_add_entry_form.h"
+#include "ui_entry_form.h"
 
 class AddEntryForm : public QDialog {
 	Q_OBJECT
@@ -12,7 +12,7 @@ class AddEntryForm : public QDialog {
 		AddEntryForm(int parent_id);
 
 	private:
-		Ui::addEntryDialog ui;
+		Ui::entryDialog ui;
 
 		int parent_id;
 

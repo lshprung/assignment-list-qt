@@ -1,7 +1,9 @@
 #ifndef ADDGROUPFORM_H
 #define ADDGROUPFORM_H
 
-#include "ui_add_group_form.h"
+#include <QObject>
+
+#include "ui_group_form.h"
 
 class AddGroupForm : public QDialog {
 	Q_OBJECT
@@ -10,7 +12,7 @@ class AddGroupForm : public QDialog {
 		AddGroupForm();
 
 	private:
-		Ui::addGroupDialog ui;
+		Ui::groupDialog ui;
 
 	private slots:
 		void accept();

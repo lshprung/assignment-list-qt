@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>addEntryDialog</class>
- <widget class="QDialog" name="addEntryDialog">
+ <class>entryDialog</class>
+ <widget class="QDialog" name="entryDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="new_entry_desc"/>
+      <widget class="QLineEdit" name="entry_desc"/>
      </item>
      <item row="0" column="0" colspan="2">
       <widget class="QLabel" name="title">
@@ -35,7 +35,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Add Entry</string>
+        <string>[TITLE]</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -65,14 +65,14 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QDateTimeEdit" name="new_entry_due">
+         <widget class="QDateTimeEdit" name="entry_due">
           <property name="displayFormat">
            <string>MM/dd/yyyy</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="new_entry_due_checkbox">
+         <widget class="QCheckBox" name="entry_due_checkbox">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -95,7 +95,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="new_entry_due_alt"/>
+      <widget class="QLineEdit" name="entry_due_alt"/>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="linkLabel">
@@ -105,7 +105,7 @@
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QLineEdit" name="new_entry_link"/>
+      <widget class="QLineEdit" name="entry_link"/>
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="colorLabel">
@@ -115,7 +115,7 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QLineEdit" name="new_entry_color"/>
+      <widget class="QLineEdit" name="entry_color"/>
      </item>
      <item row="6" column="0">
       <widget class="QLabel" name="highlightLabel">
@@ -125,7 +125,7 @@
       </widget>
      </item>
      <item row="6" column="1">
-      <widget class="QLineEdit" name="new_entry_highlight"/>
+      <widget class="QLineEdit" name="entry_highlight"/>
      </item>
     </layout>
    </item>
@@ -152,7 +152,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>addEntryDialog</receiver>
+   <receiver>entryDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -168,7 +168,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>addEntryDialog</receiver>
+   <receiver>entryDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
