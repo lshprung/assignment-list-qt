@@ -5,8 +5,8 @@
 #include "add_entry_form.h"
 #include "backend/db_sqlite.h"
 
-AddEntryForm::AddEntryForm(int parent_id) :
-	parent_id(parent_id)
+AddEntryForm::AddEntryForm(const Group &g) :
+	parent_group(g)
 {
 	// load uic
 	ui.setupUi(this);
@@ -43,7 +43,7 @@ void AddEntryForm::accept() {
 	if(!ui.entry_due_checkbox->isChecked())
 		due_text = QDateTime();
 
-	new_id = database.insertEntry(Entry(0, this->parent_id, desc_text, due_text, due_alt_text, link_text, color_text, highlight_text));
+	new_id = database.insertEntry(Entry(0, this->parent_group.id, desc_text, due_text, due_alt_text, link_text, color_text, highlight_text));
 
 	QDialog::accept();
 }

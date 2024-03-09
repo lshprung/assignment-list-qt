@@ -16,7 +16,7 @@ AddGroupForm::AddGroupForm() {
 
 void AddGroupForm::accept() {
 	QString name_text = ui.group_name->text();
-	QString column_text = ui.group_column->currentText();
+	Group::Column column_value = Group::Column(ui.group_column->currentIndex());
 	QString link_text = ui.group_link->text();
 	QMessageBox error_message;
 	BackendDB database;
@@ -31,7 +31,7 @@ void AddGroupForm::accept() {
 		return;
 	}
 
-	new_id = database.insertGroup(Group(0, name_text, column_text, link_text));
+	new_id = database.insertGroup(Group(0, name_text, column_value, link_text));
 
 	QDialog::accept();
 }

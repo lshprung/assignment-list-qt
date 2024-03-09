@@ -79,7 +79,7 @@ void AssignmentList::displayWidgets() {
 		if(groups[i]->hidden) continue;
 		new_group_layout = new GroupLayout(*groups[i]);
 		new_group_layout->addLayout(this->drawEntries(groups[i]->id)); // add entries to layout
-		if(groups[i]->column.toLower() == "left") column_left->addLayout(new_group_layout);
+		if(groups[i]->column == Group::left) column_left->addLayout(new_group_layout);
 		else column_right->addLayout(new_group_layout);
 	}
 

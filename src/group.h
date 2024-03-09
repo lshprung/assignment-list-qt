@@ -4,16 +4,17 @@
 #include <QString>
 
 struct Group {
+	enum Column { left, right };
 	int id;
 	QString name;
-	QString column;
+	Column column;
 	QString link;
 	bool hidden;
 
 	Group(
 			int id, 
 			QString name, 
-			QString column = "left", 
+			Column column = left,
 			QString link = "", 
 			bool hidden = false
 		 );

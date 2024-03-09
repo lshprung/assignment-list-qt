@@ -2,7 +2,7 @@
 #include "edit_entry_form.h"
 
 EditEntryForm::EditEntryForm(const Entry &e) :
-	e(e)
+	entry(e)
 {
 	// load uic
 	ui.setupUi(this);

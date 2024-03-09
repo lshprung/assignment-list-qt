@@ -59,7 +59,7 @@ QList<Group *> BackendDB::loadGroups() {
 			output.append(new Group(
 						query.record().field("id").value().toInt(),
 						query.record().field("name").value().toString(),
-						query.record().field("column").value().toString(),
+						Group::Column(query.record().field("column").value().toInt()),
 						query.record().field("link").value().toString(),
 						query.record().field("hidden").value().toBool()));
 		}

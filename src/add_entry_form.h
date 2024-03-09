@@ -3,18 +3,19 @@
 
 #include <QObject>
 
+#include "group.h"
 #include "ui_entry_form.h"
 
 class AddEntryForm : public QDialog {
 	Q_OBJECT
 
 	public:
-		AddEntryForm(int parent_id);
+		AddEntryForm(const Group &g);
 
 	private:
 		Ui::entryDialog ui;
 
-		int parent_id;
+		Group parent_group;
 
 	private slots:
 		void accept();

@@ -1,6 +1,6 @@
 #include "group.h"
 
-Group::Group(int id, QString name, QString column, QString link, bool hidden) :
+Group::Group(int id, QString name, Group::Column column, QString link, bool hidden) :
 	id(id),
 	name(name),
 	column(column),

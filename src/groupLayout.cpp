@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "add_entry_form.h"
+#include "edit_group_form.h"
 #include "groupLayout.h"
 #include "lib.h"
 
@@ -48,13 +49,15 @@ void GroupLayout::showContextMenu() {
 }
 
 void GroupLayout::addEntry() {
-	AddEntryForm create_new_entry_dialog(this->group.id);
+	AddEntryForm create_new_entry_dialog(this->group);
 	if(create_new_entry_dialog.exec() == QDialog::Accepted)
 		getMainWindow()->displayWidgets();
 }
 
 void GroupLayout::editGroup() {
-	qDebug() << "WIP";
+	EditGroupForm edit_group_dialog(this->group);
+	if(edit_group_dialog.exec() == QDialog::Accepted)
+		getMainWindow()->displayWidgets();
 }
 
 void GroupLayout::removeGroup() {

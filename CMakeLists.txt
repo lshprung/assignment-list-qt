@@ -41,6 +41,8 @@ set(project_sources
 	"src/assignmentList.cpp"
 	"src/assignmentList.h"
 	"src/assignmentList.ui"
+	"src/edit_group_form.cpp"
+	"src/edit_group_form.h"
 	"src/entry.cpp"
 	"src/entry.h"
 	"src/entryLayout.cpp"

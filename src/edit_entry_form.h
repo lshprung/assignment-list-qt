@@ -16,7 +16,7 @@ class EditEntryForm : public QDialog {
 	private:
 		Ui::entryDialog ui;
 
-		Entry e;
+		Entry entry;
 
 	private slots:
 		void accept();
