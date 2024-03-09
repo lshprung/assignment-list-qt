@@ -15,6 +15,8 @@
 #include "add_group_form.h"
 #include "assignmentList.h"
 #include "backend/db_sqlite.h"
+#include "entryLayout.h"
+#include "groupLayout.h"
 #include "settings.h"
 
 AssignmentList::AssignmentList() {
@@ -67,6 +69,7 @@ void AssignmentList::displayWidgets() {
 	QVBoxLayout *column_right = new QVBoxLayout();
 	BackendDB database;
 	QList<Group *> groups = database.loadGroups();
+	GroupLayout *new_group_layout;
 	int i;
 
 	// clear out old layouts if they exist
@@ -74,9 +77,10 @@ void AssignmentList::displayWidgets() {
 
 	for(i = 0; i < groups.size(); ++i) {
 		if(groups[i]->hidden) continue;
-		groups[i]->addLayout(this->drawEntries(groups[i]->id)); // add entries to layout
-		if(groups[i]->column.toLower() == "left") column_left->addLayout(groups[i]);
-		else column_right->addLayout(groups[i]);
+		new_group_layout = new GroupLayout(*groups[i]);
+		new_group_layout->addLayout(this->drawEntries(groups[i]->id)); // add entries to layout
+		if(groups[i]->column.toLower() == "left") column_left->addLayout(new_group_layout);
+		else column_right->addLayout(new_group_layout);
 	}
 
 	column_left->addStretch();
@@ -99,7 +103,7 @@ QVBoxLayout *AssignmentList::drawEntries(int parent_id) {
 		// skip if this entry is set to hidden
 		if(entries[i]->hidden) continue;
 		// TODO set right click behavior
-		output->addLayout(entries[i]);
+		output->addLayout(new EntryLayout(*entries[i]));
 	}
 
 	return output;
