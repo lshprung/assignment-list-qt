@@ -196,6 +196,30 @@ int BackendDB::insertEntry(const Entry &new_entry) {
 	return output;
 }
 
+void BackendDB::updateGroup(const Group &group) {
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		qDebug() << group.name;
+
+		query.prepare("UPDATE groups SET "
+				"name = :name, "
+				"column = :column, "
+				"link = :link, "
+				"hidden = :hidden "
+				"WHERE id = :id");
+		query.bindValue(":name", group.name);
+		query.bindValue(":column", group.column);
+		query.bindValue(":link", group.link);
+		query.bindValue(":hidden", group.hidden);
+		query.bindValue(":id", group.id);
+		query.exec();
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+}
+
 QString BackendDB::getDBPath() {
 	QSettings settings;
 	settings.beginGroup("paths");

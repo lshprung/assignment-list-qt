@@ -19,7 +19,7 @@ class BackendDB : QSqlDatabase {
 		int insertGroup(const Group &new_group);
 		int insertEntry(const Entry &new_entry);
 		int insertRule(int new_rule); // param datatype TBD
-		void updateGroup(int group); // param datatype TBD
+		void updateGroup(const Group &group);
 		void updateEntry(int entry); // param datatype TBD
 		void updateRule(int rule); // param datatype TBD
 		void removeGroup(int group); // param datatype TBD

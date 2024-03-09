@@ -1,7 +1,5 @@
 #include <QMessageBox>
 
-#include <QDebug>
-
 #include "addGroupForm.h"
 #include "backend/db_sqlite.h"
 
@@ -23,7 +21,6 @@ void AddGroupForm::accept() {
 	int new_id;
 
 	if(name_text.isEmpty()) {
-		qDebug() << "Gets here";
 		error_message.setIcon(QMessageBox::Warning);
 		error_message.setWindowTitle("Error Message");
 		error_message.setText("Name cannot be blank");
