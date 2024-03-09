@@ -201,8 +201,6 @@ void BackendDB::updateGroup(const Group &group) {
 		QSqlDatabase database(this->openDB());
 		QSqlQuery query;
 
-		qDebug() << group.name;
-
 		query.prepare("UPDATE groups SET "
 				"name = :name, "
 				"column = :column, "
@@ -218,6 +216,33 @@ void BackendDB::updateGroup(const Group &group) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+}
+
+// hide group and entries belonging to group
+// return value: number of affected rows
+int BackendDB::removeGroup(const Group &group) {
+	int output;
+
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		// First, set entries to hidden
+		query.prepare("UPDATE entries SET hidden = 1 WHERE parent_id = ?");
+		query.bindValue(0, group.id);
+		query.exec();
+
+		// Now, set the group to hidden
+		query.prepare("UPDATE groups SET hidden = 1 WHERE id = ?");
+		query.bindValue(0, group.id);
+		query.exec();
+
+		// FIXME not sure if this also needs to be called after the first query...
+		output = query.numRowsAffected();
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	return output;
 }
 
 QString BackendDB::getDBPath() {

@@ -22,7 +22,7 @@ class BackendDB : QSqlDatabase {
 		void updateGroup(const Group &group);
 		void updateEntry(int entry); // param datatype TBD
 		void updateRule(int rule); // param datatype TBD
-		void removeGroup(int group); // param datatype TBD
+		int removeGroup(const Group &group);
 		void removeEntry(int entry); // param datatype TBD
 		void removeRule(int rule); // param datatype TBD
 		void cleanHidden();

@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "addEntryForm.h"
+#include "backend/db_sqlite.h"
 #include "editGroupForm.h"
 #include "groupLayout.h"
 #include "lib.h"
@@ -61,5 +62,7 @@ void GroupLayout::editGroup() {
 }
 
 void GroupLayout::removeGroup() {
-	qDebug() << "WIP";
+	BackendDB database;
+	if(database.removeGroup(this->group) > 0)
+		getMainWindow()->displayWidgets();
 }
