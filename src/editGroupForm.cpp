@@ -1,4 +1,4 @@
-#include "edit_group_form.h"
+#include "editGroupForm.h"
 
 EditGroupForm::EditGroupForm(const Group &g) :
 	group(g)

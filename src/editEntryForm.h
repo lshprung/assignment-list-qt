@@ -4,7 +4,7 @@
 #include <QDialog>
 
 #include "entry.h"
-#include "ui_entry_form.h"
+#include "ui_entryForm.h"
 
 // form to edit/update an entry
 class EditEntryForm : public QDialog {

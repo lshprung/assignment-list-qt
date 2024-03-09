@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "ui_group_form.h"
+#include "ui_groupForm.h"
 
 class AddGroupForm : public QDialog {
 	Q_OBJECT

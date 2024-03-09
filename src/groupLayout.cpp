@@ -4,8 +4,8 @@
 
 #include <QDebug>
 
-#include "add_entry_form.h"
-#include "edit_group_form.h"
+#include "addEntryForm.h"
+#include "editGroupForm.h"
 #include "groupLayout.h"
 #include "lib.h"
 

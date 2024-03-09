@@ -4,7 +4,7 @@
 #include <QDialog>
 
 #include "group.h"
-#include "ui_group_form.h"
+#include "ui_groupForm.h"
 
 // form to edit/update a group
 class EditGroupForm : public QDialog {

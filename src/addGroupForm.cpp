@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-#include "add_group_form.h"
+#include "addGroupForm.h"
 #include "backend/db_sqlite.h"
 
 AddGroupForm::AddGroupForm() {

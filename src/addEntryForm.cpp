@@ -2,7 +2,7 @@
 #include <QMessageBox>
 #include <QString>
 
-#include "add_entry_form.h"
+#include "addEntryForm.h"
 #include "backend/db_sqlite.h"
 
 AddEntryForm::AddEntryForm(const Group &g) :

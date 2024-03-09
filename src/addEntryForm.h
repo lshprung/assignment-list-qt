@@ -4,7 +4,7 @@
 #include <QObject>
 
 #include "group.h"
-#include "ui_entry_form.h"
+#include "ui_entryForm.h"
 
 class AddEntryForm : public QDialog {
 	Q_OBJECT

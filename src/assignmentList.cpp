@@ -12,7 +12,7 @@
 #include <QErrorMessage>
 #include <QSettings>
 
-#include "add_group_form.h"
+#include "addGroupForm.h"
 #include "assignmentList.h"
 #include "backend/db_sqlite.h"
 #include "entryLayout.h"
