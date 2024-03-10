@@ -124,7 +124,7 @@ void AssignmentList::preferences() {
 }
 
 void AssignmentList::reload() {
-	qDebug() << "WIP";
+	this->displayWidgets();
 }
 
 void AssignmentList::cleanHidden() {
