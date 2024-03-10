@@ -128,7 +128,8 @@ void AssignmentList::reload() {
 }
 
 void AssignmentList::cleanHidden() {
-	qDebug() << "WIP";
+	BackendDB database;
+	database.cleanHidden();
 }
 
 void AssignmentList::aboutDialog() {

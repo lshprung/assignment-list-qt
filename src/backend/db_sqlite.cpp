@@ -245,6 +245,26 @@ int BackendDB::removeGroup(const Group &group) {
 	return output;
 }
 
+// permanently delete removed/hidden groups and entries
+void BackendDB::cleanHidden() {
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		// remove rules associated with hidden entries
+		query.exec("DELETE FROM rules WHERE id IN ("
+				"SELECT rules.id FROM rules"
+				"INNER JOIN entries ON rules.entry_id = entries.id"
+				"WHERE entries.hidden = 1)");
+		// remove hidden entries
+		query.exec("DELETE FROM entries WHERE hidden = 1");
+		// remove hidden groups
+		query.exec("DELETE FROM groups WHERE hidden = 1");
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+}
+
 QString BackendDB::getDBPath() {
 	QSettings settings;
 	settings.beginGroup("paths");
