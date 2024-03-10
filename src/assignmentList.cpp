@@ -17,6 +17,7 @@
 #include "backend/db_sqlite.h"
 #include "entryLayout.h"
 #include "groupLayout.h"
+#include "preferencesDialog.h"
 #include "settings.h"
 
 AssignmentList::AssignmentList() {
@@ -117,7 +118,9 @@ void AssignmentList::addGroup() {
 }
 
 void AssignmentList::preferences() {
-	qDebug() << "WIP";
+	PreferencesDialog preferences_dialog;
+	if(preferences_dialog.exec() == QDialog::Accepted)
+		this->displayWidgets();
 }
 
 void AssignmentList::reload() {

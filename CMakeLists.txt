@@ -56,6 +56,8 @@ set(project_sources
 	"src/lib.cpp"
 	"src/lib.h"
 	"src/main.cpp"
+	"src/preferencesDialog.cpp"
+	"src/preferencesDialog.h"
 	"src/preferencesDialog.ui"
 	"src/rule.cpp"
 	"src/rule.h"
