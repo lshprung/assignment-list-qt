@@ -63,8 +63,6 @@ set(project_sources
 	"src/rule.h"
 	"src/ruleLayout.cpp"
 	"src/ruleLayout.h"
-	"src/settings.cpp"
-	"src/settings.h"
 )
 
 add_executable(assignment-list

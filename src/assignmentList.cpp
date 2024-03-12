@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QCoreApplication>
 #include <QDate>
+#include <QDir>
 #include <QFile>
 #include <QMessageBox>
 #include <QObject>
@@ -18,7 +19,6 @@
 #include "entryLayout.h"
 #include "groupLayout.h"
 #include "preferencesDialog.h"
-#include "settings.h"
 
 AssignmentList::AssignmentList() {
 	// set QSettings information
@@ -35,12 +35,14 @@ AssignmentList::AssignmentList() {
 
 void AssignmentList::initializeSettings() {
 	QSettings settings;
-	QFile path = settings.fileName();
+	QDir local_data_dir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 
-	if(!path.exists()) {
-		qDebug() << "Creating Config";
-		Settings::createConfig();
+	settings.beginGroup("paths");
+	if(!settings.contains("db_path")) {
+		qDebug() << "Setting default db_path";
+		settings.setValue("db_path", local_data_dir.filePath("data.db"));
 	}
+	settings.endGroup();
 }
 
 void AssignmentList::initializeUI() {
