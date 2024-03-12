@@ -135,5 +135,8 @@ void EntryLayout::toggleDone() {
 }
 
 void EntryLayout::removeEntry() {
-	qDebug() << "WIP";
+	BackendDB database;
+
+	if(database.removeEntry(this->entry) > 0)
+		getMainWindow()->displayWidgets();
 }

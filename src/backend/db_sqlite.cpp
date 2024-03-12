@@ -275,6 +275,26 @@ int BackendDB::removeGroup(const Group &group) {
 	return output;
 }
 
+// return value: number of affected rows
+int BackendDB::removeEntry(const Entry &entry) {
+	int output;
+
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		query.prepare("UPDATE entries SET hidden = 1 WHERE id = ?");
+		query.bindValue(0, entry.id);
+		query.exec();
+
+		// FIXME not sure if this also needs to be called after the first query...
+		output = query.numRowsAffected();
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	return output;
+}
+
 // permanently delete removed/hidden groups and entries
 void BackendDB::cleanHidden() {
 	{
