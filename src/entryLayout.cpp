@@ -3,6 +3,7 @@
 
 #include <QDebug>
 
+#include "backend/db_sqlite.h"
 #include "editEntryForm.h"
 #include "entryLayout.h"
 #include "lib.h"
@@ -126,7 +127,11 @@ void EntryLayout::setRules() {
 }
 
 void EntryLayout::toggleDone() {
-	qDebug() << "WIP";
+	BackendDB database;
+
+	this->entry.done = !this->entry.done;
+	database.updateEntry(this->entry);
+	getMainWindow()->displayWidgets();
 }
 
 void EntryLayout::removeEntry() {
