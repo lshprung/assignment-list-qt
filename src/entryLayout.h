@@ -15,6 +15,13 @@ class EntryLayout : public QHBoxLayout {
 		Entry entry;
 
 		EntryLayout(const Entry &e);
+
+	private slots:
+		void showContextMenu();
+		void editEntry();
+		void setRules();
+		void toggleDone();
+		void removeEntry();
 };
 
 #endif

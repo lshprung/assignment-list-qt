@@ -1,6 +1,11 @@
 #include <QLabel>
+#include <QMenu>
 
+#include <QDebug>
+
+#include "editEntryForm.h"
 #include "entryLayout.h"
+#include "lib.h"
 
 EntryLayout::EntryLayout(const Entry &e) :
 	entry(e)
@@ -18,6 +23,13 @@ EntryLayout::EntryLayout(const Entry &e) :
 	body->setFont(QFont("Arial", 11));
 	body->setWordWrap(true);
 	body->setToolTip("Right-Click for actions");
+	body->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	// set context menu
+	body->setContextMenuPolicy(Qt::CustomContextMenu);
+	QObject::connect(body,
+			SIGNAL(customContextMenuRequested(const QPoint &)),
+			SLOT(showContextMenu()));
 
 	// Check rules
 	// TODO
@@ -75,5 +87,48 @@ EntryLayout::EntryLayout(const Entry &e) :
 				);
 		*/
 	}
+
 	this->addWidget(body);
+}
+
+void EntryLayout::showContextMenu() {
+	QMenu menu;
+
+	QAction *edit_entry_act = new QAction("Edit Entry");
+	QObject::connect(edit_entry_act, &QAction::triggered, this, &EntryLayout::editEntry);
+	menu.addAction(edit_entry_act);
+
+	QAction *set_rules_act = new QAction("Rules");
+	QObject::connect(edit_entry_act, &QAction::triggered, this, &EntryLayout::setRules);
+	menu.addAction(set_rules_act);
+
+	QAction *toggle_done_act = new QAction("Done");
+	toggle_done_act->setCheckable(true);
+	if(this->entry.done) toggle_done_act->setChecked(true);
+	QObject::connect(toggle_done_act, &QAction::triggered, this, &EntryLayout::toggleDone);
+	menu.addAction(toggle_done_act);
+
+	QAction *del_entry_act = new QAction("Remove Entry");
+	QObject::connect(del_entry_act, &QAction::triggered, this, &EntryLayout::removeEntry);
+	menu.addAction(del_entry_act);
+
+	menu.exec(QCursor::pos());
+}
+
+void EntryLayout::editEntry() {
+	EditEntryForm edit_entry_dialog(this->entry);
+	if(edit_entry_dialog.exec() == QDialog::Accepted)
+		getMainWindow()->displayWidgets();
+}
+
+void EntryLayout::setRules() {
+	qDebug() << "WIP";
+}
+
+void EntryLayout::toggleDone() {
+	qDebug() << "WIP";
+}
+
+void EntryLayout::removeEntry() {
+	qDebug() << "WIP";
 }

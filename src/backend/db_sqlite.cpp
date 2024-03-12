@@ -218,6 +218,36 @@ void BackendDB::updateGroup(const Group &group) {
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
 }
 
+void BackendDB::updateEntry(const Entry &entry) {
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		query.prepare("UPDATE entries SET "
+				"description = :desc, "
+				"due_date = :due, "
+				"alt_due_date = :alt_due, "
+				"link = :link, "
+				"color = :color, "
+				"highlight = :highlight, "
+				"done = :done, "
+				"hidden = :hidden "
+				"WHERE id = :id");
+		query.bindValue(":desc", entry.desc);
+		query.bindValue(":due", entry.due.toString("yyyy-MM-dd"));
+		query.bindValue(":alt_due", entry.due_alt);
+		query.bindValue(":link", entry.link);
+		query.bindValue(":color", entry.color);
+		query.bindValue(":highlight", entry.highlight);
+		query.bindValue(":done", entry.done);
+		query.bindValue(":hidden", entry.hidden);
+		query.bindValue(":id", entry.id);
+		query.exec();
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+}
+
 // hide group and entries belonging to group
 // return value: number of affected rows
 int BackendDB::removeGroup(const Group &group) {

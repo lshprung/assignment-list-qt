@@ -20,13 +20,13 @@ EditGroupForm::EditGroupForm(const Group &g) :
 }
 
 void EditGroupForm::accept() {
-	group.name = ui.group_name->text();
-	group.column = Group::Column(ui.group_column->currentIndex());
-	group.link = ui.group_link->text();
+	this->group.name = ui.group_name->text();
+	this->group.column = Group::Column(ui.group_column->currentIndex());
+	this->group.link = ui.group_link->text();
 	QMessageBox error_message;
 	BackendDB database;
 
-	if(group.name.isEmpty()) {
+	if(this->group.name.isEmpty()) {
 		error_message.setIcon(QMessageBox::Warning);
 		error_message.setWindowTitle("Error Message");
 		error_message.setText("Name cannot be blank");
