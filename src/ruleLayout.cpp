@@ -1,38 +1,40 @@
-#include <QComboBox>
-#include <QDate>
-#include <QDateTimeEdit>
-#include <QLineEdit>
 
+#include "lib.h"
 #include "ruleLayout.h"
 
 RuleLayout::RuleLayout(const Rule &r) :
 	rule(r)
 {
-	QComboBox *when_widget = new QComboBox;
-	QDateTimeEdit *date_widget = new QDateTimeEdit(QDate::currentDate());
-	QLineEdit *color_widget = new QLineEdit; // TODO consider making this a color selector widget
-	QLineEdit *highlight_widget = new QLineEdit; // TODO consider making this a color selector widget
+	this->when_widget = new QComboBox;
+	this->date_widget = new QDateTimeEdit(QDate::currentDate());
+	this->color_widget = new QLineEdit;
+	this->highlight_widget = new QLineEdit;
+	this->del_button = new QPushButton;
 
 	QStringList when_options;
 	when_options.append("Before");
 	when_options.append("After");
-	when_widget->addItems(when_options);
-	when_widget->setCurrentIndex(this->rule.when);
-	this->addWidget(when_widget);
+	this->when_widget->addItems(when_options);
+	this->when_widget->setCurrentIndex(this->rule.when);
+	this->addWidget(this->when_widget);
 
-	date_widget->setDisplayFormat("MM/dd/yyyy");
-	date_widget->setDateTime(this->rule.date);
-	this->addWidget(date_widget);
+	this->date_widget->setDisplayFormat("MM/dd/yyyy");
+	this->date_widget->setDateTime(this->rule.date);
+	this->addWidget(this->date_widget);
 
 	this->addStretch();
 
-	color_widget->setPlaceholderText("Color");
+	this->color_widget->setPlaceholderText("Color");
 	if(!this->rule.color.isEmpty())
-		color_widget->setText(this->rule.color);
-	this->addWidget(color_widget);
+		this->color_widget->setText(this->rule.color);
+	this->addWidget(this->color_widget);
 
-	highlight_widget->setPlaceholderText("Highlight");
+	this->highlight_widget->setPlaceholderText("Highlight");
 	if(!this->rule.highlight.isEmpty())
-		highlight_widget->setText(this->rule.highlight);
-	this->addWidget(highlight_widget);
+		this->highlight_widget->setText(this->rule.highlight);
+	this->addWidget(this->highlight_widget);
+
+	this->del_button->setText("Delete");
+	// connection needs to be made in rulesDialog.cpp
+	this->addWidget(this->del_button);
 }

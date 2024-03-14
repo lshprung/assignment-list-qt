@@ -7,6 +7,7 @@
 #include "editEntryForm.h"
 #include "entryLayout.h"
 #include "lib.h"
+#include "rulesDialog.h"
 
 EntryLayout::EntryLayout(const Entry &e) :
 	entry(e)
@@ -38,13 +39,11 @@ EntryLayout::EntryLayout(const Entry &e) :
 	// set conditional styling
 	if(this->entry.done) {
 		bullet->setText("\u2713");
-		/*
 		bullet->setStyleSheet(
 				"QLabel {"
 				"	color: green;"
 				"}"
 				);
-		*/
 	}
 	else
 		bullet->setText("- ");
@@ -69,24 +68,20 @@ EntryLayout::EntryLayout(const Entry &e) :
 		QFont body_font = body->font();
 		body_font.setStrikeOut(true);
 		body->setFont(body_font);
-		/*
 		body->setStyleSheet(
 				"QLabel {"
 				"	color: green"
 				"}"
 				);
-		*/
 	}
 	else {
-		/*
 		body->setStyleSheet(
 				"QLabel {"
-				"	color: " + (this->color.isEmpty() ? "default" : this->color) + ";"
-				"	background-color: " + (this->highlight.isEmpty() ? "none" : this->highlight) + ";"
-				"	font-weight: " + (this->due.isValid() && this->due <= QDateTime::currentDateTime() ? "bold" : "normal") + ";"
-				";"
+				"	color: " + (this->entry.color.isEmpty() ? "default" : this->entry.color) + ";"
+				"	background-color: " + (this->entry.highlight.isEmpty() ? "none" : this->entry.highlight) + ";"
+				"	font-weight: " + (this->entry.due.isValid() && this->entry.due <= QDateTime::currentDateTime() ? "bold" : "normal") + ";"
+				"}"
 				);
-		*/
 	}
 
 	this->addWidget(body);
@@ -100,7 +95,7 @@ void EntryLayout::showContextMenu() {
 	menu.addAction(edit_entry_act);
 
 	QAction *set_rules_act = new QAction("Rules");
-	QObject::connect(edit_entry_act, &QAction::triggered, this, &EntryLayout::setRules);
+	QObject::connect(set_rules_act, &QAction::triggered, this, &EntryLayout::setRules);
 	menu.addAction(set_rules_act);
 
 	QAction *toggle_done_act = new QAction("Done");
@@ -123,7 +118,9 @@ void EntryLayout::editEntry() {
 }
 
 void EntryLayout::setRules() {
-	qDebug() << "WIP";
+	RulesDialog rules_dialog(this->entry);
+	if(rules_dialog.exec() == QDialog::Accepted)
+		getMainWindow()->displayWidgets();
 }
 
 void EntryLayout::toggleDone() {

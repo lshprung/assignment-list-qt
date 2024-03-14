@@ -31,10 +31,6 @@ class AssignmentList : public QMainWindow {
 		void drawGroups();
 		void drawEntries();
 
-		// helpers
-		// used to clear out the grid layout when a refresh occurs
-		void recursiveClear(QLayout *layout);
-
 	private slots:
 		void preferences();
 		void reload();

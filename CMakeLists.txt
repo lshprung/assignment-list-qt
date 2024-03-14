@@ -65,6 +65,9 @@ set(project_sources
 	"src/rule.h"
 	"src/ruleLayout.cpp"
 	"src/ruleLayout.h"
+	"src/rulesDialog.cpp"
+	"src/rulesDialog.h"
+	"src/rulesDialog.ui"
 )
 
 add_executable(assignment-list

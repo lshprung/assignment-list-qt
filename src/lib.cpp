@@ -11,3 +11,12 @@ AssignmentList *getMainWindow() {
 			return mainWin;
 	return nullptr;
 }
+
+void recursiveClear(QLayout *layout) {
+	QLayoutItem *child;
+	while((child = layout->takeAt(0)) != nullptr) {
+		if(child->layout()) recursiveClear(child->layout());
+		delete child->widget();
+		delete child;
+	}
+}

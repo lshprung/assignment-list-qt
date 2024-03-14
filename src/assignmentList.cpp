@@ -18,6 +18,7 @@
 #include "backend/db_sqlite.h"
 #include "entryLayout.h"
 #include "groupLayout.h"
+#include "lib.h"
 #include "preferencesDialog.h"
 
 AssignmentList::AssignmentList() {
@@ -76,7 +77,7 @@ void AssignmentList::displayWidgets() {
 	int i;
 
 	// clear out old layouts if they exist
-	this->recursiveClear(ui.groups_layout);
+	recursiveClear(ui.groups_layout);
 
 	for(i = 0; i < groups.size(); ++i) {
 		if(groups[i]->hidden) continue;
@@ -137,13 +138,4 @@ void AssignmentList::cleanHidden() {
 void AssignmentList::aboutDialog() {
 	QMessageBox about;
 	about.about(this, "About Assignment List", "Created by Louie S. - 2023");
-}
-
-void AssignmentList::recursiveClear(QLayout *layout) {
-	QLayoutItem *child;
-	while((child = layout->takeAt(0)) != nullptr) {
-		if(child->layout()) this->recursiveClear(child->layout());
-		delete child->widget();
-		delete child;
-	}
 }

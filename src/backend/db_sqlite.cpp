@@ -134,7 +134,33 @@ QList<Rule *> BackendDB::loadRules() {
 		QSqlDatabase database(this->openDB());
 		QSqlQuery query;
 
-		query.exec("SELECT * FROM groups");
+		query.exec("SELECT * FROM rules");
+		while(query.next()) {
+			output.append(new Rule(
+						query.record().field("id").value().toInt(),
+						query.record().field("entry_id").value().toInt(),
+						(Rule::When) query.record().field("before_after").value().toInt(),
+						query.record().field("date").value().toDateTime(),
+						query.record().field("color").value().toString(),
+						query.record().field("highlight").value().toString()));
+		}
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	return output;
+}
+
+// load entries
+QList<Rule *> BackendDB::loadRules(int entry_id) {
+	QList<Rule *> output;
+
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		query.prepare("SELECT * FROM rules WHERE entry_id = ?");
+		query.bindValue(0, entry_id);
+		query.exec();
 		while(query.next()) {
 			output.append(new Rule(
 						query.record().field("id").value().toInt(),
@@ -285,6 +311,26 @@ int BackendDB::removeEntry(const Entry &entry) {
 
 		query.prepare("UPDATE entries SET hidden = 1 WHERE id = ?");
 		query.bindValue(0, entry.id);
+		query.exec();
+
+		// FIXME not sure if this also needs to be called after the first query...
+		output = query.numRowsAffected();
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	return output;
+}
+
+// return value: number of affected rows
+int BackendDB::removeRule(const Rule &rule) {
+	int output;
+
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		query.prepare("DELETE FROM rules WHERE id = ?");
+		query.bindValue(0, rule.id);
 		query.exec();
 
 		// FIXME not sure if this also needs to be called after the first query...
