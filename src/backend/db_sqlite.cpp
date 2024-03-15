@@ -47,8 +47,8 @@ BackendDB::BackendDB() {
 }
 
 // load groups
-QList<Group *> BackendDB::loadGroups() {
-	QList<Group *> output;
+QList<Group> BackendDB::loadGroups() {
+	QList<Group> output;
 
 	{
 		QSqlDatabase database(this->openDB());
@@ -56,7 +56,7 @@ QList<Group *> BackendDB::loadGroups() {
 
 		query.exec("SELECT * FROM groups");
 		while(query.next()) {
-			output.append(new Group(
+			output.append(Group(
 						query.record().field("id").value().toInt(),
 						query.record().field("name").value().toString(),
 						Group::Column(query.record().field("column").value().toInt()),
@@ -70,8 +70,8 @@ QList<Group *> BackendDB::loadGroups() {
 }
 
 // load entries
-QList<Entry *> BackendDB::loadEntries() {
-	QList<Entry *> output;
+QList<Entry> BackendDB::loadEntries() {
+	QList<Entry> output;
 
 	{
 		QSqlDatabase database(this->openDB());
@@ -79,7 +79,7 @@ QList<Entry *> BackendDB::loadEntries() {
 
 		query.exec("SELECT * FROM entries");
 		while(query.next()) {
-			output.append(new Entry(
+			output.append(Entry(
 						query.record().field("id").value().toInt(),
 						query.record().field("parent_id").value().toInt(),
 						query.record().field("description").value().toString(),
@@ -97,8 +97,8 @@ QList<Entry *> BackendDB::loadEntries() {
 	return output;
 }
 
-QList<Entry *> BackendDB::loadEntries(int parent_id) {
-	QList<Entry *> output;
+QList<Entry> BackendDB::loadEntries(int parent_id) {
+	QList<Entry> output;
 
 	{
 		QSqlDatabase database(this->openDB());
@@ -108,7 +108,7 @@ QList<Entry *> BackendDB::loadEntries(int parent_id) {
 		query.bindValue(0, parent_id);
 		query.exec();
 		while(query.next()) {
-			output.append(new Entry(
+			output.append(Entry(
 						query.record().field("id").value().toInt(),
 						query.record().field("parent_id").value().toInt(),
 						query.record().field("description").value().toString(),
@@ -127,8 +127,8 @@ QList<Entry *> BackendDB::loadEntries(int parent_id) {
 }
 
 // load entries
-QList<Rule *> BackendDB::loadRules() {
-	QList<Rule *> output;
+QList<Rule> BackendDB::loadRules() {
+	QList<Rule> output;
 
 	{
 		QSqlDatabase database(this->openDB());
@@ -136,7 +136,7 @@ QList<Rule *> BackendDB::loadRules() {
 
 		query.exec("SELECT * FROM rules");
 		while(query.next()) {
-			output.append(new Rule(
+			output.append(Rule(
 						query.record().field("id").value().toInt(),
 						query.record().field("entry_id").value().toInt(),
 						(Rule::When) query.record().field("before_after").value().toInt(),
@@ -151,8 +151,8 @@ QList<Rule *> BackendDB::loadRules() {
 }
 
 // load entries
-QList<Rule *> BackendDB::loadRules(int entry_id) {
-	QList<Rule *> output;
+QList<Rule> BackendDB::loadRules(int entry_id) {
+	QList<Rule> output;
 
 	{
 		QSqlDatabase database(this->openDB());
@@ -162,7 +162,7 @@ QList<Rule *> BackendDB::loadRules(int entry_id) {
 		query.bindValue(0, entry_id);
 		query.exec();
 		while(query.next()) {
-			output.append(new Rule(
+			output.append(Rule(
 						query.record().field("id").value().toInt(),
 						query.record().field("entry_id").value().toInt(),
 						(Rule::When) query.record().field("before_after").value().toInt(),

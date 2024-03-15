@@ -12,11 +12,11 @@
 class BackendDB : QSqlDatabase {
 	public:
 		BackendDB();
-		QList<Group *> loadGroups();
-		QList<Entry *> loadEntries();
-		QList<Entry *> loadEntries(int parent_id);
-		QList<Rule *> loadRules();
-		QList<Rule *> loadRules(int entry_id);
+		QList<Group> loadGroups();
+		QList<Entry> loadEntries();
+		QList<Entry> loadEntries(int parent_id);
+		QList<Rule> loadRules();
+		QList<Rule> loadRules(int entry_id);
 		int insertGroup(const Group &new_group);
 		int insertEntry(const Entry &new_entry);
 		int insertRule(const Rule &new_rule);

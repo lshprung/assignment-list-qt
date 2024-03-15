@@ -29,6 +29,9 @@ struct Entry {
 			bool done = false,
 			bool hidden = false
 		 );
+
+	// function for sorting algorithm
+	static bool compare(Entry a, Entry b);
 };
 
 #endif

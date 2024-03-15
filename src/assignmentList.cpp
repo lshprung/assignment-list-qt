@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <QAction>
 #include <QApplication>
 #include <QCoreApplication>
@@ -6,12 +7,12 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QObject>
+#include <QSettings>
 #include <QStandardPaths>
 #include <QUiLoader>
 
 #include <QDebug>
 #include <QErrorMessage>
-#include <QSettings>
 
 #include "addGroupForm.h"
 #include "assignmentList.h"
@@ -72,7 +73,7 @@ void AssignmentList::displayWidgets() {
 	QVBoxLayout *column_left = new QVBoxLayout();
 	QVBoxLayout *column_right = new QVBoxLayout();
 	BackendDB database;
-	QList<Group *> groups = database.loadGroups();
+	QList<Group> groups = database.loadGroups();
 	GroupLayout *new_group_layout;
 	int i;
 
@@ -80,10 +81,10 @@ void AssignmentList::displayWidgets() {
 	recursiveClear(ui.groups_layout);
 
 	for(i = 0; i < groups.size(); ++i) {
-		if(groups[i]->hidden) continue;
-		new_group_layout = new GroupLayout(*groups[i]);
-		new_group_layout->addLayout(this->drawEntries(groups[i]->id)); // add entries to layout
-		if(groups[i]->column == Group::left) column_left->addLayout(new_group_layout);
+		if(groups[i].hidden) continue;
+		new_group_layout = new GroupLayout(groups[i]);
+		new_group_layout->addLayout(this->drawEntries(groups[i].id)); // add entries to layout
+		if(groups[i].column == Group::left) column_left->addLayout(new_group_layout);
 		else column_right->addLayout(new_group_layout);
 	}
 
@@ -96,18 +97,20 @@ void AssignmentList::displayWidgets() {
 
 QVBoxLayout *AssignmentList::drawEntries(int parent_id) {
 	BackendDB database;
-	QList<Entry *> entries = database.loadEntries(parent_id);
+	QList<Entry> entries = database.loadEntries(parent_id);
 	QVBoxLayout *output = new QVBoxLayout;
 	int i;
 
 	// styling
 	output->setContentsMargins(5, 0, 0, 0);
 
-	// TODO sort entries
+	// sort entries
+	std::sort(entries.begin(), entries.end(), Entry::compare);
+
 	for(i = 0; i < entries.size(); ++i) {
 		// skip if this entry is set to hidden
-		if(entries[i]->hidden) continue;
-		output->addLayout(new EntryLayout(*entries[i]));
+		if(entries[i].hidden) continue;
+		output->addLayout(new EntryLayout(entries[i]));
 	}
 
 	return output;

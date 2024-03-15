@@ -35,18 +35,18 @@ EntryLayout::EntryLayout(const Entry &e) :
 			SLOT(showContextMenu()));
 
 	// Check rules
-	QList<Rule *> rules = this->loadRules();
+	QList<Rule> rules = this->loadRules();
 	for(i = 0; i < rules.size(); ++i) {
 		if(
-				(rules[i]->when == Rule::before && 
-				 rules[i]->date > QDateTime::currentDateTime()) ||
-				(rules[i]->when == Rule::after &&
-				 rules[i]->date <= QDateTime::currentDateTime())
+				(rules[i].when == Rule::before && 
+				 rules[i].date > QDateTime::currentDateTime()) ||
+				(rules[i].when == Rule::after &&
+				 rules[i].date <= QDateTime::currentDateTime())
 		  ) {
-			if(!rules[i]->color.isEmpty())
-				this->entry.color = rules[i]->color;
-			if(!rules[i]->highlight.isEmpty())
-				this->entry.highlight = rules[i]->highlight;
+			if(!rules[i].color.isEmpty())
+				this->entry.color = rules[i].color;
+			if(!rules[i].highlight.isEmpty())
+				this->entry.highlight = rules[i].highlight;
 		}
 	}
 
@@ -101,7 +101,7 @@ EntryLayout::EntryLayout(const Entry &e) :
 	this->addWidget(body);
 }
 
-QList<Rule *> EntryLayout::loadRules() {
+QList<Rule> EntryLayout::loadRules() {
 	BackendDB database;
 
 	return database.loadRules(this->entry.id);

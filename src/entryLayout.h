@@ -18,7 +18,7 @@ class EntryLayout : public QHBoxLayout {
 		EntryLayout(const Entry &e);
 
 	private:
-		QList<Rule *> loadRules();
+		QList<Rule> loadRules();
 
 	private slots:
 		void showContextMenu();
