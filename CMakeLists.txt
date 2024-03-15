@@ -33,45 +33,58 @@ endforeach()
 
 set(project_sources
 	"src/addEntryForm.cpp"
-	"src/addEntryForm.h"
 	"src/addGroupForm.cpp"
-	"src/addGroupForm.h"
 	"src/backend/db_sqlite.cpp"
-	"src/backend/db_sqlite.h"
 	"src/assignmentList.cpp"
-	"src/assignmentList.h"
-	"src/assignmentList.ui"
 	"src/editGroupForm.cpp"
-	"src/editGroupForm.h"
 	"src/editEntryForm.cpp"
-	"src/editEntryForm.h"
 	"src/entry.cpp"
-	"src/entry.h"
 	"src/entryLayout.cpp"
-	"src/entryLayout.h"
-	"src/entryForm.ui"
 	"src/group.cpp"
-	"src/group.h"
 	"src/groupLayout.cpp"
-	"src/groupLayout.h"
-	"src/groupForm.ui"
 	"src/lib.cpp"
-	"src/lib.h"
 	"src/main.cpp"
 	"src/preferencesDialog.cpp"
-	"src/preferencesDialog.h"
-	"src/preferencesDialog.ui"
 	"src/rule.cpp"
-	"src/rule.h"
 	"src/ruleLayout.cpp"
-	"src/ruleLayout.h"
 	"src/rulesDialog.cpp"
+)
+
+set(project_headers
+	"src/addEntryForm.h"
+	"src/addGroupForm.h"
+	"src/backend/db_sqlite.h"
+	"src/assignmentList.h"
+	"src/editGroupForm.h"
+	"src/editEntryForm.h"
+	"src/entry.h"
+	"src/entryLayout.h"
+	"src/group.h"
+	"src/groupLayout.h"
+	"src/lib.h"
+	"src/preferencesDialog.h"
+	"src/rule.h"
+	"src/ruleLayout.h"
 	"src/rulesDialog.h"
+)
+
+set(project_uis
+	"src/assignmentList.ui"
+	"src/entryForm.ui"
+	"src/groupForm.ui"
+	"src/preferencesDialog.ui"
 	"src/rulesDialog.ui"
+)
+
+set(project_misc
+	"src/icon/assignment-list.rc"
 )
 
 add_executable(assignment-list
 	${project_sources}
+	${project_headers}
+	${project_uis}
+	${project_misc}
 )
 
 target_link_libraries(assignment-list ${qt_libraries})

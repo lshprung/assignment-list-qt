@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=assignment-list
+Comment=Assignment List Qt
+Exec=assignment-list
+Icon=assignment-list
+Categories=Utility
