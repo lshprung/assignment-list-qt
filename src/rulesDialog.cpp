@@ -59,7 +59,6 @@ void RulesDialog::drawRules() {
 }
 
 void RulesDialog::addRule() {
-	// TODO handle in db backend to insert instead of updating if id is 0
 	Rule *new_rule = new Rule(0, this->entry_id, Rule::before);
 	RuleLayout *new_layout = new RuleLayout(*new_rule);
 
@@ -76,6 +75,33 @@ void RulesDialog::deleteRule(int i) {
 	if(i >= this->rules.size()) return;
 
 	this->updateRulesList();
+	// mark as needing to be deleted from database if id > 0
+	if(this->rules[i]->id > 0)
+		this->deleted_rules.append(*this->rules[i]);
 	this->rules.removeAt(i);
 	this->drawRules();
+}
+
+void RulesDialog::accept() {
+	int i;
+	BackendDB database;
+
+	this->updateRulesList();
+
+	// update rules in database
+	for(i = 0; i < this->rules.size(); ++i) {
+		// insert - this is a new rule
+		if(this->rules[i]->id == 0)
+			database.insertRule(*this->rules[i]);
+		// update - this is an existing rule
+		else
+			database.updateRule(*this->rules[i]);
+	}
+
+	// delete deleted rules in database
+	for(i = 0; i < this->deleted_rules.size(); ++i) {
+		database.removeRule(this->deleted_rules[i]);
+	}
+
+	QDialog::accept();
 }

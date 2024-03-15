@@ -197,7 +197,7 @@ int BackendDB::insertGroup(const Group &new_group) {
 	return output;
 }
 
-// insert group to the database (returns 0 if failed)
+// insert entry to the database (returns 0 if failed)
 int BackendDB::insertEntry(const Entry &new_entry) {
 	int output;
 
@@ -213,6 +213,29 @@ int BackendDB::insertEntry(const Entry &new_entry) {
 		query.bindValue(":link", new_entry.link);
 		query.bindValue(":color", new_entry.color);
 		query.bindValue(":highlight", new_entry.highlight);
+		query.exec();
+
+		output = query.lastInsertId().toInt();
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	return output;
+}
+
+// insert rule to the database (returns 0 if failed)
+int BackendDB::insertRule(const Rule &new_rule) {
+	int output;
+
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		query.prepare("INSERT INTO rules (entry_id, before_after, date, color, highlight) VALUES (:e_id, :when, :date, :color, :highlight)");
+		query.bindValue(":e_id", new_rule.entry_id);
+		query.bindValue(":when", new_rule.when);
+		query.bindValue(":date", new_rule.date.toString("yyyy-MM-dd"));
+		query.bindValue(":color", new_rule.color);
+		query.bindValue(":highlight", new_rule.highlight);
 		query.exec();
 
 		output = query.lastInsertId().toInt();
@@ -268,6 +291,28 @@ void BackendDB::updateEntry(const Entry &entry) {
 		query.bindValue(":done", entry.done);
 		query.bindValue(":hidden", entry.hidden);
 		query.bindValue(":id", entry.id);
+		query.exec();
+	}
+
+	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+}
+
+void BackendDB::updateRule(const Rule &rule) {
+	{
+		QSqlDatabase database(this->openDB());
+		QSqlQuery query;
+
+		query.prepare("UPDATE rules SET "
+				"before_after = :when, "
+				"date = :date, "
+				"color = :color, "
+				"highlight = :highlight "
+				"WHERE id = :id");
+		query.bindValue(":when", rule.when);
+		query.bindValue(":date", rule.date.toString("yyyy-MM-dd"));
+		query.bindValue(":color", rule.color);
+		query.bindValue(":highlight", rule.highlight);
+		query.bindValue(":id", rule.id);
 		query.exec();
 	}
 

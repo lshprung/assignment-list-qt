@@ -19,10 +19,10 @@ class BackendDB : QSqlDatabase {
 		QList<Rule *> loadRules(int entry_id);
 		int insertGroup(const Group &new_group);
 		int insertEntry(const Entry &new_entry);
-		int insertRule(int new_rule); // param datatype TBD
+		int insertRule(const Rule &new_rule);
 		void updateGroup(const Group &group);
 		void updateEntry(const Entry &entry);
-		void updateRule(int rule); // param datatype TBD
+		void updateRule(const Rule &rule);
 		int removeGroup(const Group &group);
 		int removeEntry(const Entry &entry);
 		int removeRule(const Rule &rule);

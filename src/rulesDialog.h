@@ -19,12 +19,14 @@ class RulesDialog : public QDialog {
 		Ui::rulesDialog ui;
 		int entry_id;
 		QList<Rule *> rules;
+		QList<Rule> deleted_rules;
 
 		void updateRulesList();
 
 	private slots:
 		void addRule();
 		void deleteRule(int i);
+		void accept();
 };
 
 #endif
