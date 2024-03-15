@@ -358,7 +358,6 @@ int BackendDB::removeEntry(const Entry &entry) {
 		query.bindValue(0, entry.id);
 		query.exec();
 
-		// FIXME not sure if this also needs to be called after the first query...
 		output = query.numRowsAffected();
 	}
 
@@ -378,7 +377,6 @@ int BackendDB::removeRule(const Rule &rule) {
 		query.bindValue(0, rule.id);
 		query.exec();
 
-		// FIXME not sure if this also needs to be called after the first query...
 		output = query.numRowsAffected();
 	}
 
@@ -418,7 +416,7 @@ QSqlDatabase BackendDB::openDB() {
 
 	database.open();
 	if(database.isOpenError()) {
-		// FIXME end-user friendly error message
+		// TODO end-user friendly error message
 		qDebug() << database.lastError();
 		std::exit(1);
 	}

@@ -103,10 +103,10 @@ QVBoxLayout *AssignmentList::drawEntries(int parent_id) {
 	// styling
 	output->setContentsMargins(5, 0, 0, 0);
 
+	// TODO sort entries
 	for(i = 0; i < entries.size(); ++i) {
 		// skip if this entry is set to hidden
 		if(entries[i]->hidden) continue;
-		// TODO set right click behavior
 		output->addLayout(new EntryLayout(*entries[i]));
 	}
 

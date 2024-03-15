@@ -7,6 +7,7 @@
 #include <QUrl>
 
 #include "entry.h"
+#include "rule.h"
 
 class EntryLayout : public QHBoxLayout {
 	Q_OBJECT
@@ -15,6 +16,9 @@ class EntryLayout : public QHBoxLayout {
 		Entry entry;
 
 		EntryLayout(const Entry &e);
+
+	private:
+		QList<Rule *> loadRules();
 
 	private slots:
 		void showContextMenu();

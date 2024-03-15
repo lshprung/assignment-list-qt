@@ -14,6 +14,7 @@ EntryLayout::EntryLayout(const Entry &e) :
 {
 	QLabel *bullet = new QLabel();
 	QLabel *body = new QLabel();
+	int i;
 
 	// set styling
 	this->setContentsMargins(2, 2, 2, 2);
@@ -34,7 +35,20 @@ EntryLayout::EntryLayout(const Entry &e) :
 			SLOT(showContextMenu()));
 
 	// Check rules
-	// TODO
+	QList<Rule *> rules = this->loadRules();
+	for(i = 0; i < rules.size(); ++i) {
+		if(
+				(rules[i]->when == Rule::before && 
+				 rules[i]->date > QDateTime::currentDateTime()) ||
+				(rules[i]->when == Rule::after &&
+				 rules[i]->date <= QDateTime::currentDateTime())
+		  ) {
+			if(!rules[i]->color.isEmpty())
+				this->entry.color = rules[i]->color;
+			if(!rules[i]->highlight.isEmpty())
+				this->entry.highlight = rules[i]->highlight;
+		}
+	}
 
 	// set conditional styling
 	if(this->entry.done) {
@@ -85,6 +99,12 @@ EntryLayout::EntryLayout(const Entry &e) :
 	}
 
 	this->addWidget(body);
+}
+
+QList<Rule *> EntryLayout::loadRules() {
+	BackendDB database;
+
+	return database.loadRules(this->entry.id);
 }
 
 void EntryLayout::showContextMenu() {
