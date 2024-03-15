@@ -70,7 +70,14 @@ EntryLayout::EntryLayout(const Entry &e) :
 
 	if(!this->entry.link.isEmpty()) {
 		body->setOpenExternalLinks(true);
-		body->setText(body->text() + "<a href=\"" + this->entry.link.toString() + "\" " "style=\"color: " + (this->entry.color.isEmpty() ? "default" : this->entry.color ) + ";\">");
+		body->setText(body->text() + "<a href=\"" + this->entry.link.toString() + "\" " "style=\"color: ");
+		if(this->entry.done)
+			body->setText(body->text() + "green");
+		else if(this->entry.color.isEmpty())
+			body->setText(body->text() + "default");
+		else
+			body->setText(body->text() + this->entry.color);
+		body->setText(body->text() + ";\">");
 	}
 	body->setText(body->text() + this->entry.desc);
 	if(!this->entry.link.isEmpty()) {
