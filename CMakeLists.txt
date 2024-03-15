@@ -87,4 +87,7 @@ add_executable(assignment-list
 	${project_misc}
 )
 
+# Avoid opening console on windows
+set_target_properties(assignment-list PROPERTIES WIN32_EXECUTABLE ON)
+
 target_link_libraries(assignment-list ${qt_libraries})
