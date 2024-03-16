@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(assignment-list VERSION 0.0.1 LANGUAGES CXX)
 
+set(PROJECT_TITLE "Assignment List")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED)
 
@@ -77,8 +79,11 @@ set(project_uis
 )
 
 set(project_misc
+	"resources.qrc"
 	"src/icon/assignment-list.rc"
 )
+
+configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h @ONLY)
 
 add_executable(assignment-list
 	${project_sources}

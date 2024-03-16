@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>data/assignment-list.svg</file>
+    </qresource>
+</RCC>

@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QErrorMessage>
 
+#include "../config.h"
 #include "addGroupForm.h"
 #include "assignmentList.h"
 #include "backend/db_sqlite.h"
@@ -140,5 +141,9 @@ void AssignmentList::cleanHidden() {
 
 void AssignmentList::aboutDialog() {
 	QMessageBox about;
-	about.about(this, "About Assignment List", "Created by Louie S. - 2023");
+	QString title("About " + QString(PROJECT_TITLE));
+	QString text(
+			QString(PROJECT_TITLE) + " " + QString(VERSION) + "\n" + 
+			"Created by Louie S. - 2024");
+	about.about(this, title, text);
 }
