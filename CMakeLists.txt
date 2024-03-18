@@ -101,8 +101,9 @@ target_link_libraries(assignment-list ${qt_libraries})
 # Installation
 install(TARGETS assignment-list)
 
-# TODO make conditional only for linux
 # install desktop entry and icon
-configure_file(data/assignment-list.desktop.in ${CMAKE_CURRENT_SOURCE_DIR}/data/assignment-list.desktop @ONLY)
-install(FILES data/assignment-list.desktop DESTINATION share/applications)
-install(FILES data/assignment-list.svg DESTINATION share/pixmaps)
+if(CMAKE_SYSTEM MATCHES "Linux.*")
+	configure_file(data/assignment-list.desktop.in ${CMAKE_CURRENT_SOURCE_DIR}/data/assignment-list.desktop @ONLY)
+	install(FILES data/assignment-list.desktop DESTINATION share/applications)
+	install(FILES data/assignment-list.svg DESTINATION share/pixmaps)
+endif()
