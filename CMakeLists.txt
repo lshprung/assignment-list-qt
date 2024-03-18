@@ -107,3 +107,5 @@ if(CMAKE_SYSTEM MATCHES "Linux.*")
 	install(FILES data/assignment-list.desktop DESTINATION share/applications)
 	install(FILES data/assignment-list.svg DESTINATION share/pixmaps)
 endif()
+
+include(CPack)
