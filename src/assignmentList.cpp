@@ -25,8 +25,8 @@
 
 AssignmentList::AssignmentList() {
 	// set QSettings information
-	QCoreApplication::setOrganizationName("assignment-list-qt"); // TODO grab this from a config.h type file
-	QCoreApplication::setApplicationName("assignment-list-qt"); // TODO grab this from a config.h type file
+	QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
+	QCoreApplication::setApplicationName(PROJECT_NAME);
 
 	// ensure QSettings location exists
 	this->initializeSettings();

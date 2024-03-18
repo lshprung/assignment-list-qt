@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(assignment-list VERSION 0.0.1 LANGUAGES CXX)
 
+set(ORGANIZATION_NAME "assignment-list-qt")
 set(PROJECT_TITLE "Assignment List")
 
 set(CMAKE_CXX_STANDARD 17)
