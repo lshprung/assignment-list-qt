@@ -135,8 +135,16 @@ void AssignmentList::reload() {
 }
 
 void AssignmentList::cleanHidden() {
+	QMessageBox::StandardButton are_you_sure;
 	BackendDB database;
-	database.cleanHidden();
+
+	// create 'are you sure?' dialog before going forward
+	are_you_sure = QMessageBox::question(this, "Are You Sure?", 
+			"Are you sure? All removed groups and entries will be permanently deleted from the database.",
+			QMessageBox::Yes|QMessageBox::No);
+
+	if(are_you_sure == QMessageBox::Yes)
+		database.cleanHidden();
 }
 
 void AssignmentList::aboutDialog() {
