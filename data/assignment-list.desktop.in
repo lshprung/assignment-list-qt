@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=@PROJECT_NAME@
+Comment=Assignment List Qt
+Path=@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_BINDIR@/@PROJECT_NAME@
+Exec=@PROJECT_NAME@
+Icon=assignment-list
+Categories=Utility
