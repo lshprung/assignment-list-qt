@@ -1,6 +1,23 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(assignment-list VERSION 0.1 HOMEPAGE_URL "https://github.com/lshprung/assignment-list-qt" LANGUAGES CXX)
+# Get the date for last git commit (or today if it can't)
+if(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/.git")
+	find_package(Git)
+	if(GIT_FOUND)
+		execute_process(COMMAND ${GIT_EXECUTABLE} show --no-patch --format=%cd --date=format:'%Y%m%d'
+			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+			OUTPUT_VARIABLE patchdate
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+			ERROR_QUIET)
+		string(REGEX REPLACE "'" "" patchdate "${patchdate}")
+	endif()
+endif()
+if(NOT DEFINED patchdate)
+	string(TIMESTAMP patchdate "%Y%m%d" UTC)
+endif()
+
+project(assignment-list VERSION 0.0.${patchdate} HOMEPAGE_URL "https://github.com/lshprung/assignment-list-qt" LANGUAGES CXX)
+
 
 set(ORGANIZATION_NAME "assignment-list-qt")
 set(PROJECT_TITLE "Assignment List")
@@ -19,7 +36,6 @@ set(qt_components "Core" "Gui" "Sql" "UiTools" "Widgets")
 set(qt_names "Qt6" "Qt5")
 if(USE_QT5)
 	set(qt_names "Qt5")
-	# Requires Qt version >= 5.4
 elseif(USE_QT6)
 	set(qt_names "Qt6")
 endif()
@@ -116,12 +132,12 @@ set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$
 
 # CPack Deb configuration
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+set(CPACK_DEBIAN_PACKAGE_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}+${CMAKE_PROJECT_VERSION_PATCH}")
 if(QT_VERSION_MAJOR VERSION_EQUAL 5)
 	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt5core5a (>= 5.4), libqt5gui5 (>= 5.4), libqt5sql5 (>= 5.4), libqt5sql5-sqlite (>= 5.4), libqt5svg5 (>= 5.4), libqt5widgets5 (>= 5.4)")
 elseif(QT_VERSION_MAJOR VERSION_EQUAL 6)
 	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6core6, libqt6gui6, libqt6sql6, libqt6sql6-sqlite, libqt6svg6, libqt6uitools6, libqt6widgets6")
 endif()
-
 set(CPACK_DEBIAN_PACKAGE_SECTION utils)
 
 include(CPack)
