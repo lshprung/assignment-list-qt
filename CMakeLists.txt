@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.12)
 
-project(assignment-list VERSION 0.0.1 LANGUAGES CXX)
+project(assignment-list VERSION 0.1 HOMEPAGE_URL "https://github.com/lshprung/assignment-list-qt" LANGUAGES CXX)
 
 set(ORGANIZATION_NAME "assignment-list-qt")
 set(PROJECT_TITLE "Assignment List")
@@ -107,5 +107,15 @@ if(CMAKE_SYSTEM MATCHES "Linux.*")
 	install(FILES data/assignment-list.desktop DESTINATION share/applications)
 	install(FILES data/assignment-list.svg DESTINATION share/pixmaps)
 endif()
+
+# CPack configuration
+set(CPACK_PACKAGE_DESCRIPTION "A QT application for managing grouped tasks")
+set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
+set(CPACK_PACKAGE_CONTACT "Louie Shprung <lshprung@tutanota.com>")
+
+# CPack Deb configuration
+set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6sql6, libqt6widgets6")
+set(CPACK_DEBIAN_PACKAGE_SECTION utils)
 
 include(CPack)
