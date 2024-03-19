@@ -20,8 +20,10 @@ set(qt_names "Qt6" "Qt5")
 if(USE_QT5)
 	set(qt_names "Qt5")
 	# Requires Qt version >= 5.4
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt5sql5 (>= 5.4), libqt5sql5-sqlite (>= 5.4), libqt5widgets5 (>= 5.4)")
 elseif(USE_QT6)
 	set(qt_names "Qt6")
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6sql6, libqt6sql6-sqlite, libqt6widgets6")
 endif()
 
 find_package(QT NAMES ${qt_names} REQUIRED COMPONENTS ${qt_components})
@@ -115,7 +117,6 @@ set(CPACK_PACKAGE_CONTACT "Louie Shprung <lshprung@tutanota.com>")
 
 # CPack Deb configuration
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6sql6, libqt6widgets6")
 set(CPACK_DEBIAN_PACKAGE_SECTION utils)
 
 include(CPack)
