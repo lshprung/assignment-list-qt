@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=@PROJECT_NAME@
+Name=@PROJECT_TITLE@
 Comment=Assignment List Qt
 Path=@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_BINDIR@/@PROJECT_NAME@
 Exec=@PROJECT_NAME@
