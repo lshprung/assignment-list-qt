@@ -18,7 +18,6 @@ endif()
 
 project(assignment-list VERSION 0.0.${patchdate} HOMEPAGE_URL "https://github.com/lshprung/assignment-list-qt" LANGUAGES CXX)
 
-
 set(ORGANIZATION_NAME "assignment-list-qt")
 set(PROJECT_TITLE "Assignment List")
 
@@ -29,8 +28,15 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+# Options
 option(USE_QT5 "Use Qt5, instead of Qt6" no)
 option(USE_QT6 "Use Qt6, instead of Qt5" no)
+option(IS_RELEASE "Set if this is a release candidate" no)
+
+if(IS_RELEASE)
+	unset(CMAKE_PROJECT_VERSION_PATCH)
+	message("Marked as release: excluding patch in version number")
+endif()
 
 set(qt_components "Core" "Gui" "Sql" "UiTools" "Widgets")
 set(qt_names "Qt6" "Qt5")
@@ -126,13 +132,22 @@ endif()
 
 # CPack configuration
 set(CPACK_PACKAGE_DESCRIPTION "A QT application for managing grouped tasks")
+set(CPACK_PACKAGE_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
+if(NOT IS_RELEASE)
+	set(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
+endif()
 set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
 set(CPACK_PACKAGE_CONTACT "Louie Shprung <lshprung@tutanota.com>")
 set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$;/config\.h$;/data/assignment-list\.desktop$")
 
 # CPack Deb configuration
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
-set(CPACK_DEBIAN_PACKAGE_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}+${CMAKE_PROJECT_VERSION_PATCH}")
+if(IS_RELEASE)
+	set(CPACK_DEBIAN_PACKAGE_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}")
+else()
+	set(CPACK_DEBIAN_PACKAGE_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}+${CMAKE_PROJECT_VERSION_PATCH}")
+endif()
 if(QT_VERSION_MAJOR VERSION_EQUAL 5)
 	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt5core5a (>= 5.4), libqt5gui5 (>= 5.4), libqt5sql5 (>= 5.4), libqt5sql5-sqlite (>= 5.4), libqt5svg5 (>= 5.4), libqt5widgets5 (>= 5.4)")
 elseif(QT_VERSION_MAJOR VERSION_EQUAL 6)
