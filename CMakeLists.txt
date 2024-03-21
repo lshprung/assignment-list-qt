@@ -132,10 +132,10 @@ endif()
 
 # CPack configuration
 set(CPACK_PACKAGE_DESCRIPTION "A QT application for managing grouped tasks")
-set(CPACK_PACKAGE_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
-if(NOT IS_RELEASE)
-	set(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
+if(IS_RELEASE)
+	set(CPACK_PACKAGE_VERSION ${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR})
+else()
+	set(CPACK_PACKAGE_VERSION ${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}+${CMAKE_PROJECT_VERSION_PATCH})
 endif()
 set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
 set(CPACK_PACKAGE_CONTACT "Louie Shprung <lshprung@tutanota.com>")
@@ -143,16 +143,15 @@ set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$
 
 # CPack Deb configuration
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
-if(IS_RELEASE)
-	set(CPACK_DEBIAN_PACKAGE_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}")
-else()
-	set(CPACK_DEBIAN_PACKAGE_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}+${CMAKE_PROJECT_VERSION_PATCH}")
-endif()
 if(QT_VERSION_MAJOR VERSION_EQUAL 5)
-	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt5core5a (>= 5.4), libqt5gui5 (>= 5.4), libqt5sql5 (>= 5.4), libqt5sql5-sqlite (>= 5.4), libqt5svg5 (>= 5.4), libqt5widgets5 (>= 5.4)")
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7), libqt5core5a (>= 5.4), libqt5gui5 (>= 5.4), libqt5sql5 (>= 5.4), libqt5sql5-sqlite (>= 5.4), libqt5svg5 (>= 5.4), libqt5widgets5 (>= 5.4)")
 elseif(QT_VERSION_MAJOR VERSION_EQUAL 6)
-	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqt6core6, libqt6gui6, libqt6sql6, libqt6sql6-sqlite, libqt6svg6, libqt6uitools6, libqt6widgets6")
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.34), libqt6core6, libqt6gui6, libqt6sql6, libqt6sql6-sqlite, libqt6svg6, libqt6uitools6, libqt6widgets6")
 endif()
 set(CPACK_DEBIAN_PACKAGE_SECTION utils)
+
+# CPack RPM configuration
+set(CPACK_RPM_FILE_NAME RPM-DEFAULT)
+# TODO set CPACK_RPM_PACKAGE_REQUIRES
 
 include(CPack)
