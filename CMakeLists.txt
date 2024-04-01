@@ -125,6 +125,7 @@ install(TARGETS assignment-list)
 
 # install desktop entry and icon
 if(CMAKE_SYSTEM MATCHES "Linux.*")
+	include(GNUInstallDirs)
 	configure_file(data/assignment-list.desktop.in ${CMAKE_CURRENT_SOURCE_DIR}/data/assignment-list.desktop @ONLY)
 	install(FILES data/assignment-list.desktop DESTINATION share/applications)
 	install(FILES data/assignment-list.svg DESTINATION share/pixmaps)
