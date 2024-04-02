@@ -31,6 +31,9 @@ AssignmentList::AssignmentList() {
 	// ensure QSettings location exists
 	this->initializeSettings();
 
+	// load everything from database into static global variables
+	this->initializeGlobals();
+
 	// load uic
 	ui.setupUi(this);
 	this->initializeUI();
@@ -46,6 +49,15 @@ void AssignmentList::initializeSettings() {
 		settings.setValue("db_path", local_data_dir.filePath("data.db"));
 	}
 	settings.endGroup();
+}
+
+// load from database into static QList variables
+void AssignmentList::initializeGlobals() {
+	BackendDB database;
+
+	Group::groups = database.loadGroups();
+	Entry::entries = database.loadEntries();
+	Rule::rules = database.loadRules();
 }
 
 void AssignmentList::initializeUI() {
@@ -74,18 +86,17 @@ void AssignmentList::displayWidgets() {
 	QVBoxLayout *column_left = new QVBoxLayout();
 	QVBoxLayout *column_right = new QVBoxLayout();
 	BackendDB database;
-	QList<Group> groups = database.loadGroups();
 	GroupLayout *new_group_layout;
 	int i;
 
 	// clear out old layouts if they exist
 	recursiveClear(ui.groups_layout);
 
-	for(i = 0; i < groups.size(); ++i) {
-		if(groups[i].hidden) continue;
-		new_group_layout = new GroupLayout(groups[i]);
-		new_group_layout->addLayout(this->drawEntries(groups[i].id)); // add entries to layout
-		if(groups[i].column == Group::left) column_left->addLayout(new_group_layout);
+	for(i = 0; i < Group::groups.size(); ++i) {
+		if(Group::groups[i].hidden) continue;
+		new_group_layout = new GroupLayout(Group::groups[i]);
+		new_group_layout->addLayout(this->drawEntries(Group::groups[i].id)); // add entries to layout
+		if(Group::groups[i].column == Group::left) column_left->addLayout(new_group_layout);
 		else column_right->addLayout(new_group_layout);
 	}
 
@@ -98,7 +109,6 @@ void AssignmentList::displayWidgets() {
 
 QVBoxLayout *AssignmentList::drawEntries(int parent_id) {
 	BackendDB database;
-	QList<Entry> entries = database.loadEntries(parent_id);
 	QVBoxLayout *output = new QVBoxLayout;
 	int i;
 
@@ -106,12 +116,13 @@ QVBoxLayout *AssignmentList::drawEntries(int parent_id) {
 	output->setContentsMargins(5, 0, 0, 0);
 
 	// sort entries
-	std::sort(entries.begin(), entries.end(), Entry::compare);
+	std::sort(Entry::entries.begin(), Entry::entries.end(), Entry::compare);
 
-	for(i = 0; i < entries.size(); ++i) {
+	for(i = 0; i < Entry::entries.size(); ++i) {
+		if(Entry::entries[i].parent_id != parent_id) continue;
 		// skip if this entry is set to hidden
-		if(entries[i].hidden) continue;
-		output->addLayout(new EntryLayout(entries[i]));
+		if(Entry::entries[i].hidden) continue;
+		output->addLayout(new EntryLayout(Entry::entries[i]));
 	}
 
 	return output;
@@ -131,6 +142,7 @@ void AssignmentList::preferences() {
 }
 
 void AssignmentList::reload() {
+	this->initializeGlobals();
 	this->displayWidgets();
 }
 

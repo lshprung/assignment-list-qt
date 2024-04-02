@@ -18,6 +18,8 @@ struct Group {
 			QString link = "", 
 			bool hidden = false
 		 );
+
+	static QList<Group> groups;
 };
 
 #endif

@@ -126,7 +126,7 @@ QList<Entry> BackendDB::loadEntries(int parent_id) {
 	return output;
 }
 
-// load entries
+// load rules
 QList<Rule> BackendDB::loadRules() {
 	QList<Rule> output;
 
@@ -150,7 +150,7 @@ QList<Rule> BackendDB::loadRules() {
 	return output;
 }
 
-// load entries
+// load rules
 QList<Rule> BackendDB::loadRules(int entry_id) {
 	QList<Rule> output;
 
@@ -194,6 +194,9 @@ int BackendDB::insertGroup(const Group &new_group) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	// update static variable
+	if(output > 0)
+		Group::groups.append(Group(output, new_group.name, new_group.column, new_group.link));
 	return output;
 }
 
@@ -219,6 +222,9 @@ int BackendDB::insertEntry(const Entry &new_entry) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	// update static variable
+	if(output > 0)
+		Entry::entries.append(Entry(output, new_entry.parent_id, new_entry.desc, new_entry.due, new_entry.due_alt, new_entry.link, new_entry.color, new_entry.highlight));
 	return output;
 }
 
@@ -242,10 +248,15 @@ int BackendDB::insertRule(const Rule &new_rule) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	// update static variable
+	if(output > 0)
+		Rule::rules.append(Rule(output, new_rule.entry_id, new_rule.when, new_rule.date, new_rule.color, new_rule.highlight));
 	return output;
 }
 
 void BackendDB::updateGroup(const Group &group) {
+	int i;
+
 	{
 		QSqlDatabase database(this->openDB());
 		QSqlQuery query;
@@ -265,9 +276,18 @@ void BackendDB::updateGroup(const Group &group) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	// update static variable
+	for(i = 0; i < Group::groups.size(); ++i) {
+		if(Group::groups[i].id == group.id) {
+			Group::groups.replace(i, group);
+			break;
+		}
+	}
 }
 
 void BackendDB::updateEntry(const Entry &entry) {
+	int i;
+
 	{
 		QSqlDatabase database(this->openDB());
 		QSqlQuery query;
@@ -295,9 +315,18 @@ void BackendDB::updateEntry(const Entry &entry) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	// update static variable
+	for(i = 0; i < Entry::entries.size(); ++i) {
+		if(Entry::entries[i].id == entry.id) {
+			Entry::entries.replace(i, entry);
+			break;
+		}
+	}
 }
 
 void BackendDB::updateRule(const Rule &rule) {
+	int i;
+
 	{
 		QSqlDatabase database(this->openDB());
 		QSqlQuery query;
@@ -317,12 +346,20 @@ void BackendDB::updateRule(const Rule &rule) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	// update static variable
+	for(i = 0; i < Rule::rules.size(); ++i) {
+		if(Rule::rules[i].id == rule.id) {
+			Rule::rules.replace(i, rule);
+			break;
+		}
+	}
 }
 
 // hide group and entries belonging to group
 // return value: number of affected rows
 int BackendDB::removeGroup(const Group &group) {
 	int output;
+	int i;
 
 	{
 		QSqlDatabase database(this->openDB());
@@ -343,12 +380,24 @@ int BackendDB::removeGroup(const Group &group) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	// update static variable
+	for(i = 0; i < Entry::entries.size(); ++i) {
+		if(Entry::entries[i].parent_id == group.id) {
+			Entry::entries.removeAt(i);
+		}
+	}
+	for(i = 0; i < Group::groups.size(); ++i) {
+		if(Group::groups[i].id == group.id) {
+			Group::groups.removeAt(i);
+		}
+	}
 	return output;
 }
 
 // return value: number of affected rows
 int BackendDB::removeEntry(const Entry &entry) {
 	int output;
+	int i;
 
 	{
 		QSqlDatabase database(this->openDB());
@@ -362,12 +411,20 @@ int BackendDB::removeEntry(const Entry &entry) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	// update static variable
+	for(i = 0; i < Entry::entries.size(); ++i) {
+		if(Entry::entries[i].id == entry.id) {
+			Entry::entries.removeAt(i);
+			break;
+		}
+	}
 	return output;
 }
 
 // return value: number of affected rows
 int BackendDB::removeRule(const Rule &rule) {
 	int output;
+	int i;
 
 	{
 		QSqlDatabase database(this->openDB());
@@ -381,6 +438,13 @@ int BackendDB::removeRule(const Rule &rule) {
 	}
 
 	QSqlDatabase::removeDatabase("qt_sql_default_connection");
+	// update static variable
+	for(i = 0; i < Rule::rules.size(); ++i) {
+		if(Rule::rules[i].id == rule.id) {
+			Rule::rules.removeAt(i);
+			break;
+		}
+	}
 	return output;
 }
 

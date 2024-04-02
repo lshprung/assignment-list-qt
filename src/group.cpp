@@ -1,3 +1,5 @@
+#include <QList>
+
 #include "group.h"
 
 Group::Group(int id, QString name, Group::Column column, QString link, bool hidden) :
@@ -8,3 +10,5 @@ Group::Group(int id, QString name, Group::Column column, QString link, bool hidd
 	hidden(hidden)
 {
 }
+
+QList<Group> Group::groups;

@@ -1,3 +1,5 @@
+#include <QList>
+
 #include "rule.h"
 
 Rule::Rule(int id, int entry_id, When when, QDateTime date, QString color, QString highlight) :
@@ -9,3 +11,5 @@ Rule::Rule(int id, int entry_id, When when, QDateTime date, QString color, QStri
 	highlight(highlight)
 {
 }
+
+QList<Rule> Rule::rules;

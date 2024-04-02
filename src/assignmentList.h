@@ -14,6 +14,7 @@ class AssignmentList : public QMainWindow {
 		QSettings configuration;
 
 		AssignmentList();
+		void initializeGlobals();
 		void displayWidgets();
 
 	private:

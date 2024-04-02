@@ -21,6 +21,8 @@ struct Rule {
 			QString color = "",
 			QString highlight = ""
 		);
+
+	static QList<Rule> rules;
 };
 
 #endif

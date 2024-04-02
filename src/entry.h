@@ -30,6 +30,8 @@ struct Entry {
 			bool hidden = false
 		 );
 
+	static QList<Entry> entries;
+
 	// function for sorting algorithm
 	static bool compare(Entry a, Entry b);
 };

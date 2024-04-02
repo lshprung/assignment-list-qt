@@ -1,3 +1,5 @@
+#include <QList>
+
 #include "entry.h"
 
 Entry::Entry(int id, int parent_id, QString desc, QDateTime due, QString due_alt, QUrl link, QString color, QString highlight, bool done, bool hidden) :
@@ -13,6 +15,8 @@ Entry::Entry(int id, int parent_id, QString desc, QDateTime due, QString due_alt
 	hidden(hidden) 
 {
 }
+
+QList<Entry> Entry::entries;
 
 bool Entry::compare(Entry a, Entry b) {
 	// 1st level: sort not done before done
