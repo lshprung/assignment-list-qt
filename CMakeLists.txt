@@ -158,5 +158,6 @@ if(QT_VERSION_MAJOR VERSION_EQUAL 5)
 elseif(QT_VERSION_MAJOR VERSION_EQUAL 6)
 	set(CPACK_RPM_PACKAGE_REQUIRES "qt6-qtsvg")
 endif()
+set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION /usr/share/applications /usr/share/pixmaps)
 
 include(CPack)
