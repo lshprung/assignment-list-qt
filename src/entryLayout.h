@@ -25,6 +25,7 @@ class EntryLayout : public QHBoxLayout {
 		void editEntry();
 		void setRules();
 		void toggleDone();
+		void cloneEntry();
 		void removeEntry();
 };
 

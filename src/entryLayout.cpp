@@ -131,6 +131,10 @@ void EntryLayout::showContextMenu() {
 	QObject::connect(toggle_done_act, &QAction::triggered, this, &EntryLayout::toggleDone);
 	menu.addAction(toggle_done_act);
 
+	QAction *clone_entry_act = new QAction("Clone Entry");
+	QObject::connect(clone_entry_act, &QAction::triggered, this, &EntryLayout::cloneEntry);
+	menu.addAction(clone_entry_act);
+
 	QAction *del_entry_act = new QAction("Remove Entry");
 	QObject::connect(del_entry_act, &QAction::triggered, this, &EntryLayout::removeEntry);
 	menu.addAction(del_entry_act);
@@ -155,6 +159,13 @@ void EntryLayout::toggleDone() {
 
 	this->entry.done = !this->entry.done;
 	database.updateEntry(this->entry);
+	getMainWindow()->displayWidgets();
+}
+
+void EntryLayout::cloneEntry() {
+	BackendDB database;
+
+	database.insertEntry(this->entry);
 	getMainWindow()->displayWidgets();
 }
 
