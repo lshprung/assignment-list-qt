@@ -73,8 +73,8 @@ void AssignmentList::initializeUI() {
 	ui.toolBar->addAction(ui.actionAdd_Group);
 
 	this->displayDate();
-	this->displayWidgets();
 	this->show();
+	this->displayWidgets();
 }
 
 void AssignmentList::displayDate() {
