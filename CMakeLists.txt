@@ -143,6 +143,9 @@ set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
 set(CPACK_PACKAGE_CONTACT "Louie Shprung <lshprung@tutanota.com>")
 set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$;/config\.h$;/data/assignment-list\.desktop$")
 
+# CPack NSIS configuration
+set(CPACK_NSIS_DEFINES "RequestExecutionLevel user")
+
 # CPack Deb configuration
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
 if(QT_VERSION_MAJOR VERSION_EQUAL 5)
