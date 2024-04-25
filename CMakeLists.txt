@@ -121,11 +121,11 @@ set_target_properties(assignment-list PROPERTIES WIN32_EXECUTABLE ON)
 target_link_libraries(assignment-list ${qt_libraries})
 
 # Installation
+include(GNUInstallDirs)
 install(TARGETS assignment-list)
 
 # install desktop entry and icon
 if(CMAKE_SYSTEM MATCHES "Linux.*")
-	include(GNUInstallDirs)
 	configure_file(data/assignment-list.desktop.in ${CMAKE_CURRENT_SOURCE_DIR}/data/assignment-list.desktop @ONLY)
 	install(FILES data/assignment-list.desktop DESTINATION share/applications)
 	install(FILES data/assignment-list.svg DESTINATION share/pixmaps)
@@ -145,6 +145,21 @@ set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$
 
 # CPack NSIS configuration
 set(CPACK_NSIS_DEFINES "RequestExecutionLevel user")
+# Based on https://stackoverflow.com/q/69139412
+if(CMAKE_SYSTEM MATCHES "Windows*")
+	include(InstallRequiredSystemLibraries)
+	find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
+	add_custom_command(TARGET assignment-list POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/qtDeploy/
+		COMMAND ${WINDEPLOYQT_EXECUTABLE}
+			--dir ${CMAKE_BINARY_DIR}/qtDeploy $<TARGET_FILE:assignment-list>
+		)
+	install(
+		DIRECTORY ${CMAKE_BINARY_DIR}/qtDeploy/
+		DESTINATION ${CMAKE_INSTALL_BINDIR}
+		FILES_MATCHING_PATTERN "*.*"
+		)
+endif()
 
 # CPack Deb configuration
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
