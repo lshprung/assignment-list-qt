@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.21)
 
 # Get the date for last git commit (or today if it can't)
 if(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/.git")
@@ -122,7 +122,10 @@ target_link_libraries(assignment-list ${qt_libraries})
 
 # Installation
 include(GNUInstallDirs)
-install(TARGETS assignment-list)
+# Do not install normally if on Windows (we will install to / rather than /bin of install location)
+if(NOT CMAKE_SYSTEM MATCHES "Windows*")
+	install(TARGETS assignment-list)
+endif()
 
 # install desktop entry and icon
 if(CMAKE_SYSTEM MATCHES "Linux.*")
@@ -144,9 +147,12 @@ set(CPACK_PACKAGE_CONTACT "Louie Shprung <lshprung@tutanota.com>")
 set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$;/config\.h$;/data/assignment-list\.desktop$")
 
 # CPack NSIS configuration
+# TODO provide option to create desktop shortcut
+# TODO installed software does not work if .../mingw64/bin/ is not on the PATH
 set(CPACK_NSIS_DEFINES "RequestExecutionLevel user")
 # Based on https://stackoverflow.com/q/69139412
 if(CMAKE_SYSTEM MATCHES "Windows*")
+	set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_TITLE})
 	include(InstallRequiredSystemLibraries)
 	find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
 	add_custom_command(TARGET assignment-list POST_BUILD
@@ -154,11 +160,43 @@ if(CMAKE_SYSTEM MATCHES "Windows*")
 		COMMAND ${WINDEPLOYQT_EXECUTABLE}
 			--dir ${CMAKE_BINARY_DIR}/qtDeploy $<TARGET_FILE:assignment-list>
 		)
+# Install dlls
 	install(
 		DIRECTORY ${CMAKE_BINARY_DIR}/qtDeploy/
-		DESTINATION ${CMAKE_INSTALL_BINDIR}
-		FILES_MATCHING_PATTERN "*.*"
+		DESTINATION /
+		FILES_MATCHING PATTERN "*.*"
 		)
+# Based on https://discourse.cmake.org/t/runtime-dependencies-cannot-find-dll/3782
+# and https://discourse.cmake.org/t/get-runtime-dependencies-does-not-seem-to-work-with-mingw/2239
+	install(CODE "set(CMAKE_MINGW_SYSTEM_LIBRARY_PATH \"${CMAKE_FIND_ROOT_PATH}/bin/\")")
+	install(TARGETS assignment-list
+		RUNTIME_DEPENDENCIES
+			PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
+			POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
+			DIRECTORIES ${CMAKE_SYSTEM_LIBRARY_PATH} ${CMAKE_MINGW_SYSTEM_LIBRARY_PATH}
+		DESTINATION /
+	)
+	#install(CODE [[
+	#	file(GET_RUNTIME_DEPENDENCIES 
+	#		LIBRARIES "$<TARGET_FILE:assignment-list>"
+	#		RESOLVED_DEPENDENCIES_VAR _r_deps
+	#		UNRESOLVED_DEPENDENCIES_VAR _u_deps
+	#		DIRECTORIES ${DEPENDENCY_PATHS}
+	#		PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
+	#		POST_EXCLUDE_REGEXES" ".*system32/.*\\.dll"
+	#	)
+	#	foreach(_file ${_r_deps})
+	#		file(INSTALL
+	#			DESTINATION "${CMAKE_INSTALL_BINDIR}"
+	#			TYPE SHARED_LIBRARY
+	#			FILES "${_file}"
+	#		)
+	#	endforeach()
+	#	list(LENGTH _u_deps _u_length)
+	#	if("${_u_length}" GREATER 0)
+	#		message(WARNING "Unresolved dependencies detected!")
+	#	endif()
+	#]])
 endif()
 
 # CPack Deb configuration
