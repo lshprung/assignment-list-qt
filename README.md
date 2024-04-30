@@ -28,6 +28,18 @@ On Fedora (Qt6):
 # dnf install cmake gcc-c++ qt6-qtbase-devel qt6-qttools-devel qt6-qtsvg-devel
 ```
 
+On Arch Linux (Qt5):
+
+```
+# pacman -S cmake gcc make qt5-base qt5-svg qt5-tools
+```
+
+On Arch Linux (Qt6):
+
+```
+# pacman -S cmake gcc make qt6-base qt6-svg qt6-tools
+```
+
 ### Build Instructions
 
 ```
