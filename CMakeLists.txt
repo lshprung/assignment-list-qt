@@ -147,8 +147,15 @@ set(CPACK_PACKAGE_CONTACT "Louie Shprung <lshprung@tutanota.com>")
 set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$;/config\.h$;/data/assignment-list\.desktop$")
 
 # CPack NSIS configuration
-# TODO provide option to create desktop shortcut
+# Allow regular users to run installer
 set(CPACK_NSIS_DEFINES "RequestExecutionLevel user")
+# Install a StartMenu Shortcut
+set(CPACK_NSIS_CREATE_ICONS_EXTRA
+	"CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk' '$INSTDIR\\\\assignment-list.exe'"
+)
+set(CPACK_NSIS_DELETE_ICONS_EXTRA
+	"Delete '$SMPROGRAMS\\\\$START_MENU\\\\${PROJECT_TITLE}.lnk'"
+)
 # Based on https://stackoverflow.com/q/69139412
 if(CMAKE_SYSTEM MATCHES "Windows*")
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_TITLE})
