@@ -149,6 +149,9 @@ set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$
 # CPack NSIS configuration
 # Allow regular users to run installer
 set(CPACK_NSIS_DEFINES "RequestExecutionLevel user")
+# Set installer icons
+set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/data/assignment-list.ico")
+set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/data/assignment-list.ico")
 # Install a StartMenu Shortcut
 set(CPACK_NSIS_CREATE_ICONS_EXTRA
 	"CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk' '$INSTDIR\\\\assignment-list.exe'"
