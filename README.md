@@ -67,3 +67,8 @@ Building installer packages using CPack is also supported for the following pack
 
 - DEB (`cpack -G DEB`)
 - RPM (`cpack -G RPM`)
+- Windows Installer (`cpack -G NSIS`)
+
+### Caveats
+
+- Compiling on Windows currently requires the use of [MSYS2 MinGW](https://www.msys2.org/) to build correctly

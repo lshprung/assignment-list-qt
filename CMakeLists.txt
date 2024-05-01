@@ -118,7 +118,7 @@ add_executable(assignment-list
 # Avoid opening console on windows
 set_target_properties(assignment-list PROPERTIES WIN32_EXECUTABLE ON)
 
-target_link_libraries(assignment-list ${qt_libraries})
+target_link_libraries(assignment-list PUBLIC ${qt_libraries})
 
 # Installation
 include(GNUInstallDirs)
@@ -148,7 +148,6 @@ set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$
 
 # CPack NSIS configuration
 # TODO provide option to create desktop shortcut
-# TODO installed software does not work if .../mingw64/bin/ is not on the PATH
 set(CPACK_NSIS_DEFINES "RequestExecutionLevel user")
 # Based on https://stackoverflow.com/q/69139412
 if(CMAKE_SYSTEM MATCHES "Windows*")
@@ -161,14 +160,18 @@ if(CMAKE_SYSTEM MATCHES "Windows*")
 			--dir ${CMAKE_BINARY_DIR}/qtDeploy $<TARGET_FILE:assignment-list>
 		)
 # Install dlls
+	install(CODE "set(CMAKE_MINGW_SYSTEM_LIBRARY_PATH \"${CMAKE_FIND_ROOT_PATH}/bin/\")")
 	install(
 		DIRECTORY ${CMAKE_BINARY_DIR}/qtDeploy/
 		DESTINATION /
 		FILES_MATCHING PATTERN "*.*"
 		)
+# FIXME this only works on MSYS2 with NO flexibility!
+	find_file(SQLITE_DLL "libsqlite3-0.dll" PATHS ${CMAKE_SYSTEM_LIBRARY_PATH} ${CMAKE_MINGW_SYSTEM_LIBRARY_PATH} NO_DEFAULT_PATH)
+	target_link_libraries(assignment-list PRIVATE ${SQLITE_DLL})
+	install(FILES ${SQLITE_DLL} DESTINATION /)
 # Based on https://discourse.cmake.org/t/runtime-dependencies-cannot-find-dll/3782
 # and https://discourse.cmake.org/t/get-runtime-dependencies-does-not-seem-to-work-with-mingw/2239
-	install(CODE "set(CMAKE_MINGW_SYSTEM_LIBRARY_PATH \"${CMAKE_FIND_ROOT_PATH}/bin/\")")
 	install(TARGETS assignment-list
 		RUNTIME_DEPENDENCIES
 			PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
