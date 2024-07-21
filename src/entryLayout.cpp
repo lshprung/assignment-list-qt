@@ -64,7 +64,7 @@ EntryLayout::EntryLayout(const Entry &e) :
 	this->addWidget(bullet);
 
 	if(!this->entry.due.isNull())
-		body->setText(this->entry.due.toString("MM/dd/yyyy: "));
+		body->setText(this->entry.due.toString("dddd, MM/dd/yyyy: "));
 	else if(!this->entry.due_alt.isEmpty())
 		body->setText(this->entry.due_alt + ": ");
 
