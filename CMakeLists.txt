@@ -146,74 +146,74 @@ set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
 set(CPACK_PACKAGE_CONTACT "Louie Shprung <lshprung@tutanota.com>")
 set(CPACK_SOURCE_IGNORE_FILES "/\.git.*;/\.cache;/build;/compile_commands\.json$;/config\.h$;/data/assignment-list\.desktop$")
 
-# CPack NSIS configuration
-# Allow regular users to run installer
-set(CPACK_NSIS_DEFINES "RequestExecutionLevel user")
-# Set installer icons
-set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/data/assignment-list.ico")
-set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/data/assignment-list.ico")
-# Install a StartMenu Shortcut
-set(CPACK_NSIS_CREATE_ICONS_EXTRA
-	"CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk' '$INSTDIR\\\\assignment-list.exe'"
-)
-set(CPACK_NSIS_DELETE_ICONS_EXTRA
-	"Delete '$SMPROGRAMS\\\\$START_MENU\\\\${PROJECT_TITLE}.lnk'"
-)
-# Set FinishPage
-set(CPACK_NSIS_EXECUTABLES_DIRECTORY "/")
-set(CPACK_NSIS_MUI_FINISHPAGE_RUN "assignment-list.exe")
-# Based on https://stackoverflow.com/q/69139412
-if(CMAKE_SYSTEM MATCHES "Windows*")
-	set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_TITLE})
-	include(InstallRequiredSystemLibraries)
-	find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
-	add_custom_command(TARGET assignment-list POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/qtDeploy/
-		COMMAND ${WINDEPLOYQT_EXECUTABLE}
-			--dir ${CMAKE_BINARY_DIR}/qtDeploy $<TARGET_FILE:assignment-list>
-		)
-# Install dlls
-	install(CODE "set(CMAKE_MINGW_SYSTEM_LIBRARY_PATH \"${CMAKE_FIND_ROOT_PATH}/bin/\")")
-	install(
-		DIRECTORY ${CMAKE_BINARY_DIR}/qtDeploy/
-		DESTINATION /
-		FILES_MATCHING PATTERN "*.*"
-		)
-# FIXME this only works on MSYS2 with NO flexibility!
-	find_file(SQLITE_DLL "libsqlite3-0.dll" PATHS ${CMAKE_SYSTEM_LIBRARY_PATH} ${CMAKE_MINGW_SYSTEM_LIBRARY_PATH} NO_DEFAULT_PATH)
-	target_link_libraries(assignment-list PRIVATE ${SQLITE_DLL})
-	install(FILES ${SQLITE_DLL} DESTINATION /)
-# Based on https://discourse.cmake.org/t/runtime-dependencies-cannot-find-dll/3782
-# and https://discourse.cmake.org/t/get-runtime-dependencies-does-not-seem-to-work-with-mingw/2239
-	install(TARGETS assignment-list
-		RUNTIME_DEPENDENCIES
-			PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
-			POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
-			DIRECTORIES ${CMAKE_SYSTEM_LIBRARY_PATH} ${CMAKE_MINGW_SYSTEM_LIBRARY_PATH}
-		DESTINATION /
-	)
-	#install(CODE [[
-	#	file(GET_RUNTIME_DEPENDENCIES 
-	#		LIBRARIES "$<TARGET_FILE:assignment-list>"
-	#		RESOLVED_DEPENDENCIES_VAR _r_deps
-	#		UNRESOLVED_DEPENDENCIES_VAR _u_deps
-	#		DIRECTORIES ${DEPENDENCY_PATHS}
-	#		PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
-	#		POST_EXCLUDE_REGEXES" ".*system32/.*\\.dll"
-	#	)
-	#	foreach(_file ${_r_deps})
-	#		file(INSTALL
-	#			DESTINATION "${CMAKE_INSTALL_BINDIR}"
-	#			TYPE SHARED_LIBRARY
-	#			FILES "${_file}"
-	#		)
-	#	endforeach()
-	#	list(LENGTH _u_deps _u_length)
-	#	if("${_u_length}" GREATER 0)
-	#		message(WARNING "Unresolved dependencies detected!")
-	#	endif()
-	#]])
-endif()
+## CPack NSIS configuration
+## Allow regular users to run installer
+#set(CPACK_NSIS_DEFINES "RequestExecutionLevel user")
+## Set installer icons
+#set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/data/assignment-list.ico")
+#set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/data/assignment-list.ico")
+## Install a StartMenu Shortcut
+#set(CPACK_NSIS_CREATE_ICONS_EXTRA
+#	"CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk' '$INSTDIR\\\\assignment-list.exe'"
+#)
+#set(CPACK_NSIS_DELETE_ICONS_EXTRA
+#	"Delete '$SMPROGRAMS\\\\$START_MENU\\\\${PROJECT_TITLE}.lnk'"
+#)
+## Set FinishPage
+#set(CPACK_NSIS_EXECUTABLES_DIRECTORY "/")
+#set(CPACK_NSIS_MUI_FINISHPAGE_RUN "assignment-list.exe")
+## Based on https://stackoverflow.com/q/69139412
+#if(CMAKE_SYSTEM MATCHES "Windows*")
+#	set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_TITLE})
+#	include(InstallRequiredSystemLibraries)
+#	find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
+#	add_custom_command(TARGET assignment-list POST_BUILD
+#		COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/qtDeploy/
+#		COMMAND ${WINDEPLOYQT_EXECUTABLE}
+#			--dir ${CMAKE_BINARY_DIR}/qtDeploy $<TARGET_FILE:assignment-list>
+#		)
+## Install dlls
+#	install(CODE "set(CMAKE_MINGW_SYSTEM_LIBRARY_PATH \"${CMAKE_FIND_ROOT_PATH}/bin/\")")
+#	install(
+#		DIRECTORY ${CMAKE_BINARY_DIR}/qtDeploy/
+#		DESTINATION /
+#		FILES_MATCHING PATTERN "*.*"
+#		)
+## FIXME this only works on MSYS2 with NO flexibility!
+#	find_file(SQLITE_DLL "libsqlite3-0.dll" PATHS ${CMAKE_SYSTEM_LIBRARY_PATH} ${CMAKE_MINGW_SYSTEM_LIBRARY_PATH} NO_DEFAULT_PATH)
+#	target_link_libraries(assignment-list PRIVATE ${SQLITE_DLL})
+#	install(FILES ${SQLITE_DLL} DESTINATION /)
+## Based on https://discourse.cmake.org/t/runtime-dependencies-cannot-find-dll/3782
+## and https://discourse.cmake.org/t/get-runtime-dependencies-does-not-seem-to-work-with-mingw/2239
+#	install(TARGETS assignment-list
+#		RUNTIME_DEPENDENCIES
+#			PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
+#			POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
+#			DIRECTORIES ${CMAKE_SYSTEM_LIBRARY_PATH} ${CMAKE_MINGW_SYSTEM_LIBRARY_PATH}
+#		DESTINATION /
+#	)
+#	#install(CODE [[
+#	#	file(GET_RUNTIME_DEPENDENCIES 
+#	#		LIBRARIES "$<TARGET_FILE:assignment-list>"
+#	#		RESOLVED_DEPENDENCIES_VAR _r_deps
+#	#		UNRESOLVED_DEPENDENCIES_VAR _u_deps
+#	#		DIRECTORIES ${DEPENDENCY_PATHS}
+#	#		PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
+#	#		POST_EXCLUDE_REGEXES" ".*system32/.*\\.dll"
+#	#	)
+#	#	foreach(_file ${_r_deps})
+#	#		file(INSTALL
+#	#			DESTINATION "${CMAKE_INSTALL_BINDIR}"
+#	#			TYPE SHARED_LIBRARY
+#	#			FILES "${_file}"
+#	#		)
+#	#	endforeach()
+#	#	list(LENGTH _u_deps _u_length)
+#	#	if("${_u_length}" GREATER 0)
+#	#		message(WARNING "Unresolved dependencies detected!")
+#	#	endif()
+#	#]])
+#endif()
 
 # CPack Deb configuration
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
