@@ -108,12 +108,44 @@ set(project_misc
 
 configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h @ONLY)
 
-add_executable(assignment-list
-	${project_sources}
-	${project_headers}
-	${project_uis}
-	${project_misc}
-)
+#add_executable(assignment-list
+#	${project_sources}
+#	${project_headers}
+#	${project_uis}
+#	${project_misc}
+#)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(assignment-list
+        MANUAL_FINALIZATION
+        ${project_sources}
+		${project_headers}
+		${project_uis}
+		${project_misc}
+    )
+# Define target properties for Android with Qt 6 as:
+#    set_property(TARGET qt_quick_hello APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
+# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+else()
+    if(ANDROID)
+        add_library(assignment-list SHARED
+			${project_sources}
+			${project_headers}
+			${project_uis}
+			${project_misc}
+        )
+# Define properties for Android with Qt 5 after find_package() calls as:
+#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+    else()
+        add_executable(assignment-list
+			${project_sources}
+			${project_headers}
+			${project_uis}
+			${project_misc}
+        )
+    endif()
+endif()
 
 # Avoid opening console on windows
 set_target_properties(assignment-list PROPERTIES WIN32_EXECUTABLE ON)
@@ -124,7 +156,11 @@ target_link_libraries(assignment-list PUBLIC ${qt_libraries})
 include(GNUInstallDirs)
 # Do not install normally if on Windows (we will install to / rather than /bin of install location)
 if(NOT CMAKE_SYSTEM MATCHES "Windows*")
-	install(TARGETS assignment-list)
+	install(TARGETS assignment-list
+		BUNDLE DESTINATION .
+		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	)
 endif()
 
 # install desktop entry and icon
@@ -132,6 +168,10 @@ if(CMAKE_SYSTEM MATCHES "Linux.*")
 	configure_file(data/assignment-list.desktop.in ${CMAKE_CURRENT_SOURCE_DIR}/data/assignment-list.desktop @ONLY)
 	install(FILES data/assignment-list.desktop DESTINATION share/applications)
 	install(FILES data/assignment-list.svg DESTINATION share/pixmaps)
+endif()
+
+if(QT_VERSION_MAJOR EQUAL 6)
+	qt_finalize_executable(assignment-list)
 endif()
 
 # CPack configuration
