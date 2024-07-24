@@ -1,7 +1,7 @@
 #include <QMessageBox>
 
 #include "addGroupForm.h"
-#include "backend/db_sqlite.h"
+#include "../../backend/db_sqlite.h"
 
 AddGroupForm::AddGroupForm() {
 	// load uic

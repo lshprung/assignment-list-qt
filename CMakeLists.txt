@@ -56,49 +56,65 @@ foreach(X ${qt_components})
 	list(APPEND qt_libraries "Qt${QT_VERSION_MAJOR}::${X}")
 endforeach()
 
-set(project_sources
-	"src/addEntryForm.cpp"
-	"src/addGroupForm.cpp"
+set(project_sources_frontend
+	"src/frontend/qtwidgets/addEntryForm.cpp"
+	"src/frontend/qtwidgets/addGroupForm.cpp"
+	"src/frontend/qtwidgets/assignmentList.cpp"
+	"src/frontend/qtwidgets/editGroupForm.cpp"
+	"src/frontend/qtwidgets/editEntryForm.cpp"
+	"src/frontend/qtwidgets/entry.cpp"
+	"src/frontend/qtwidgets/entryLayout.cpp"
+	"src/frontend/qtwidgets/group.cpp"
+	"src/frontend/qtwidgets/groupLayout.cpp"
+	"src/frontend/qtwidgets/lib.cpp"
+	"src/frontend/qtwidgets/main.cpp"
+	"src/frontend/qtwidgets/preferencesDialog.cpp"
+	"src/frontend/qtwidgets/rule.cpp"
+	"src/frontend/qtwidgets/ruleLayout.cpp"
+	"src/frontend/qtwidgets/rulesDialog.cpp"
+)
+
+set(project_sources_backend
 	"src/backend/db_sqlite.cpp"
-	"src/assignmentList.cpp"
-	"src/editGroupForm.cpp"
-	"src/editEntryForm.cpp"
-	"src/entry.cpp"
-	"src/entryLayout.cpp"
-	"src/group.cpp"
-	"src/groupLayout.cpp"
-	"src/lib.cpp"
-	"src/main.cpp"
-	"src/preferencesDialog.cpp"
-	"src/rule.cpp"
-	"src/ruleLayout.cpp"
-	"src/rulesDialog.cpp"
+)
+
+set(project_sources
+	${project_sources_frontend}
+	${project_sources_backend}
+)
+
+set(project_headers_frontend
+	"src/frontend/qtwidgets/addEntryForm.h"
+	"src/frontend/qtwidgets/addGroupForm.h"
+	"src/frontend/qtwidgets/assignmentList.h"
+	"src/frontend/qtwidgets/editGroupForm.h"
+	"src/frontend/qtwidgets/editEntryForm.h"
+	"src/frontend/qtwidgets/entry.h"
+	"src/frontend/qtwidgets/entryLayout.h"
+	"src/frontend/qtwidgets/group.h"
+	"src/frontend/qtwidgets/groupLayout.h"
+	"src/frontend/qtwidgets/lib.h"
+	"src/frontend/qtwidgets/preferencesDialog.h"
+	"src/frontend/qtwidgets/rule.h"
+	"src/frontend/qtwidgets/ruleLayout.h"
+	"src/frontend/qtwidgets/rulesDialog.h"
+)
+
+set(project_headers_backend
+	"src/backend/db_sqlite.h"
 )
 
 set(project_headers
-	"src/addEntryForm.h"
-	"src/addGroupForm.h"
-	"src/backend/db_sqlite.h"
-	"src/assignmentList.h"
-	"src/editGroupForm.h"
-	"src/editEntryForm.h"
-	"src/entry.h"
-	"src/entryLayout.h"
-	"src/group.h"
-	"src/groupLayout.h"
-	"src/lib.h"
-	"src/preferencesDialog.h"
-	"src/rule.h"
-	"src/ruleLayout.h"
-	"src/rulesDialog.h"
+	${project_headers_frontend}
+	${project_headers_backend}
 )
 
 set(project_uis
-	"src/assignmentList.ui"
-	"src/entryForm.ui"
-	"src/groupForm.ui"
-	"src/preferencesDialog.ui"
-	"src/rulesDialog.ui"
+	"src/frontend/qtwidgets/assignmentList.ui"
+	"src/frontend/qtwidgets/entryForm.ui"
+	"src/frontend/qtwidgets/groupForm.ui"
+	"src/frontend/qtwidgets/preferencesDialog.ui"
+	"src/frontend/qtwidgets/rulesDialog.ui"
 )
 
 set(project_misc
@@ -106,22 +122,23 @@ set(project_misc
 	"src/icon/assignment-list.rc"
 )
 
+set(project_sources_full
+	${project_sources}
+	${project_headers}
+	${project_uis}
+	${project_misc}
+)
+
 configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h @ONLY)
 
 #add_executable(assignment-list
-#	${project_sources}
-#	${project_headers}
-#	${project_uis}
-#	${project_misc}
+#	${project_sources_full}
 #)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(assignment-list
         MANUAL_FINALIZATION
-        ${project_sources}
-		${project_headers}
-		${project_uis}
-		${project_misc}
+		${project_sources_full}
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET qt_quick_hello APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -130,19 +147,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 else()
     if(ANDROID)
         add_library(assignment-list SHARED
-			${project_sources}
-			${project_headers}
-			${project_uis}
-			${project_misc}
+			${project_sources_full}
         )
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
         add_executable(assignment-list
-			${project_sources}
-			${project_headers}
-			${project_uis}
-			${project_misc}
+			${project_sources_full}
         )
     endif()
 endif()

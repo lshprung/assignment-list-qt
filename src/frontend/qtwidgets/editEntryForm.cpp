@@ -1,6 +1,6 @@
 #include <QMessageBox>
 
-#include "backend/db_sqlite.h"
+#include "../../backend/db_sqlite.h"
 #include "editEntryForm.h"
 
 EditEntryForm::EditEntryForm(const Entry &e) :

@@ -14,10 +14,10 @@
 #include <QDebug>
 #include <QErrorMessage>
 
-#include "../config.h"
+#include "../../../config.h"
 #include "addGroupForm.h"
 #include "assignmentList.h"
-#include "backend/db_sqlite.h"
+#include "../../backend/db_sqlite.h"
 #include "entryLayout.h"
 #include "groupLayout.h"
 #include "lib.h"

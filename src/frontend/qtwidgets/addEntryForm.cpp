@@ -3,7 +3,7 @@
 #include <QString>
 
 #include "addEntryForm.h"
-#include "backend/db_sqlite.h"
+#include "../../backend/db_sqlite.h"
 
 AddEntryForm::AddEntryForm(const Group &g) :
 	parent_group(g)

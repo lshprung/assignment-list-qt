@@ -5,7 +5,7 @@
 #include <QDebug>
 
 #include "addEntryForm.h"
-#include "backend/db_sqlite.h"
+#include "../../backend/db_sqlite.h"
 #include "editGroupForm.h"
 #include "groupLayout.h"
 #include "lib.h"

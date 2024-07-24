@@ -5,9 +5,9 @@
 #include <QStringList>
 #include <qsqldatabase.h>
 
-#include "../entry.h"
-#include "../group.h"
-#include "../rule.h"
+#include "../frontend/qtwidgets/entry.h"
+#include "../frontend/qtwidgets/group.h"
+#include "../frontend/qtwidgets/rule.h"
 
 class BackendDB : QSqlDatabase {
 	public:

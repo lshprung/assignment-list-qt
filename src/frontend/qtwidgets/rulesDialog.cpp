@@ -4,7 +4,7 @@
 
 #include <QDebug>
 
-#include "backend/db_sqlite.h"
+#include "../../backend/db_sqlite.h"
 #include "lib.h"
 #include "ruleLayout.h"
 #include "rulesDialog.h"
