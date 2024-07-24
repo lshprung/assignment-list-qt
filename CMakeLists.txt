@@ -40,7 +40,7 @@ if(IS_RELEASE)
 	set(NSIS_PRODUCT_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.0.0")
 endif()
 
-set(qt_components "Core" "Gui" "Sql" "UiTools" "Widgets")
+set(qt_components "Core" "Gui" "Sql" "UiTools" "Widgets" "Quick")
 set(qt_names "Qt6" "Qt5")
 if(USE_QT5)
 	set(qt_names "Qt5")
@@ -58,6 +58,7 @@ foreach(X ${qt_components})
 	list(APPEND qt_libraries "Qt${QT_VERSION_MAJOR}::${X}")
 endforeach()
 
+# QtWidgets sources
 set(project_sources_frontend
 	"src/frontend/qtwidgets/addEntryForm.cpp"
 	"src/frontend/qtwidgets/addGroupForm.cpp"
@@ -131,6 +132,12 @@ set(project_sources_full
 	${project_misc}
 )
 
+# Sources unique to qtquick
+set(qtquick_sources
+	"src/frontend/qtquick/main.cpp"
+	"src/frontend/qtquick/qml.qrc"
+)
+
 configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h @ONLY)
 if(CMAKE_SYSTEM MATCHES "Windows*")
 	configure_file(nsis/installer.nsi.in ${CMAKE_CURRENT_BINARY_DIR}/installer.nsi @ONLY)
@@ -145,6 +152,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
 		${project_sources_full}
     )
+	qt_add_executable(assignment-list-mobile
+		MANUAL_FINALIZATION
+		${qtquick_sources}
+	)
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET qt_quick_hello APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
@@ -154,19 +165,27 @@ else()
         add_library(assignment-list SHARED
 			${project_sources_full}
         )
+		add_library(assignment-list-mobile SHARED
+			${qtquick_sources}
+		)
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
         add_executable(assignment-list
 			${project_sources_full}
         )
+		add_executable(assignment-list-mobile
+			${qtquick_sources}
+		)
     endif()
 endif()
 
 # Avoid opening console on windows
 set_target_properties(assignment-list PROPERTIES WIN32_EXECUTABLE ON)
+set_target_properties(assignment-list-mobile PROPERTIES WIN32_EXECUTABLE ON)
 
 target_link_libraries(assignment-list PUBLIC ${qt_libraries})
+target_link_libraries(assignment-list-mobile PUBLIC ${qt_libraries})
 
 # Installation
 include(GNUInstallDirs)
@@ -185,6 +204,7 @@ endif()
 
 if(QT_VERSION_MAJOR EQUAL 6)
 	qt_finalize_executable(assignment-list)
+	qt_finalize_executable(assignment-list-mobile)
 endif()
 
 # CPack configuration
