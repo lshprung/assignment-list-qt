@@ -1,5 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+
+#include "../../../config.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +12,10 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+	// forward values to qml engine
+	engine.rootContext()->setContextProperty("PROJECT_TITLE", PROJECT_TITLE);
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(
         &engine,

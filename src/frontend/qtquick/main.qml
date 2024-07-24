@@ -7,7 +7,7 @@ Window {
 	height: 480
 	visible: true
 	// TODO grab this from config.h
-	title: qsTr("Assignment List")
+	title: PROJECT_TITLE
 
 	// DropDown for groups (including an "all" option)
 	Item {
