@@ -67,7 +67,7 @@ Building installer packages using CPack is also supported for the following pack
 
 - DEB (`cpack -G DEB`)
 - RPM (`cpack -G RPM`)
-- Windows Installer (`cpack -G NSIS`)
+- Windows Installer (`makensis installer.nsi`)
 
 ### Caveats
 
