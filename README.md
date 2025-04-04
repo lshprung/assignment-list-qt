@@ -51,7 +51,7 @@ $ make
 
 The above commands run from the project root will build the application.
 
-The cmake command can be substituted with `cmake -DUSE_QT5=yes ../` to explicitly use Qt5 over Qt6 or `cmake -DUSE_QT6=yes ../` to explicitly use Qt6 over Qt5.
+The cmake command can be substituted with `cmake -DUSE_QT_VERSION=Qt5 ../` to explicitly use Qt5 over Qt6 or `cmake -DUSE_QT_VERSION=Qt6 ../` to explicitly use Qt6 over Qt5.
 
 If using ninja instead of Makefiles, run `ninja` instead of `make`
 

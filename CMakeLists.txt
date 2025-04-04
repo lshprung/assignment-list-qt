@@ -29,8 +29,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 # Options
-option(USE_QT5 "Use Qt5, instead of Qt6" no)
-option(USE_QT6 "Use Qt6, instead of Qt5" no)
+set(USE_QT_VERSION "any" CACHE STRING "Specify Qt major version to use")
 option(IS_RELEASE "Set if this is a release candidate" no)
 
 if(IS_RELEASE)
@@ -39,11 +38,11 @@ if(IS_RELEASE)
 endif()
 
 set(qt_components "Core" "Gui" "Sql" "UiTools" "Widgets")
-set(qt_names "Qt6" "Qt5")
-if(USE_QT5)
-	set(qt_names "Qt5")
-elseif(USE_QT6)
-	set(qt_names "Qt6")
+set_property(CACHE USE_QT_VERSION PROPERTY STRINGS "any" "Qt5" "Qt6")
+if(USE_QT_VERSION STREQUAL "any")
+	set(qt_names "Qt6" "Qt5")
+else()
+	set(qt_names ${USE_QT_VERSION})
 endif()
 
 find_package(QT NAMES ${qt_names} REQUIRED COMPONENTS ${qt_components})
