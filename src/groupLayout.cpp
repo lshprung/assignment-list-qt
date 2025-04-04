@@ -24,7 +24,7 @@ GroupLayout::GroupLayout(const Group &g) :
 			SIGNAL(customContextMenuRequested(const QPoint &)),
 			SLOT(showContextMenu()));
 	
-	QFont name_font = QFont("Arial", 13);
+	QFont name_font = QFont("Sans", 13);
 	name_font.setUnderline(true);
 	name_label->setFont(name_font);
 

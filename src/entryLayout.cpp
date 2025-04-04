@@ -19,11 +19,11 @@ EntryLayout::EntryLayout(const Entry &e) :
 	// set styling
 	this->setContentsMargins(2, 2, 2, 2);
 
-	bullet->setFont(QFont("Arial", 11));
+	bullet->setFont(QFont("Sans", 11));
 	bullet->setMaximumWidth(15);
 
 	body->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::LinksAccessibleByMouse);
-	body->setFont(QFont("Arial", 11));
+	body->setFont(QFont("Sans", 11));
 	body->setWordWrap(true);
 	body->setToolTip("Right-Click for actions");
 	body->setContextMenuPolicy(Qt::CustomContextMenu);
