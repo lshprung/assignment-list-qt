@@ -143,6 +143,7 @@ void AssignmentList::preferences() {
 
 void AssignmentList::reload() {
 	this->initializeGlobals();
+	this->displayDate();
 	this->displayWidgets();
 }
 
