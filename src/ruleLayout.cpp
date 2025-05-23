@@ -7,6 +7,7 @@ RuleLayout::RuleLayout(const Rule &r) :
 {
 	this->when_widget = new QComboBox;
 	this->date_widget = new QDateTimeEdit(QDate::currentDate());
+	this->date_widget->setCalendarPopup(true);
 	this->color_widget = new QLineEdit;
 	this->highlight_widget = new QLineEdit;
 	this->del_button = new QPushButton;
