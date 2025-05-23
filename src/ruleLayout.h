@@ -22,6 +22,9 @@ class RuleLayout : public QHBoxLayout {
 		QPushButton *del_button;
 
 		RuleLayout(const Rule &r);
+
+	private slots:
+		void toggle_date_enabled();
 };
 
 #endif

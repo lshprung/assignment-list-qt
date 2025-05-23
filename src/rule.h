@@ -5,7 +5,12 @@
 #include <QString>
 
 struct Rule {
-	enum When { before, after };
+	enum When { 
+		before, 
+		before_due_date,
+		after,
+		after_due_date
+	};
 	int id;
 	int entry_id;
 	When when;

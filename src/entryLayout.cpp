@@ -2,6 +2,7 @@
 #include <QMenu>
 
 #include <QDebug>
+#include <qglobal.h>
 
 #include "backend/db_sqlite.h"
 #include "editEntryForm.h"
@@ -37,6 +38,17 @@ EntryLayout::EntryLayout(const Entry &e) :
 	// Check rules
 	QList<Rule> rules = this->loadRules();
 	for(i = 0; i < rules.size(); ++i) {
+		switch(rules[i].when) {
+			case Rule::before_due_date:
+				rules[i].when = Rule::before;
+				rules[i].date = this->entry.due;
+				break;
+			case Rule::after_due_date:
+				rules[i].when = Rule::after;
+				rules[i].date = this->entry.due;
+				break;
+		}
+
 		if(
 				(rules[i].when == Rule::before && 
 				 rules[i].date > QDateTime::currentDateTime()) ||

@@ -52,7 +52,7 @@ class BackendDB : QSqlDatabase {
 			"CREATE TABLE rules ("
 				"id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,"
 				"entry_id REFERENCES entries (id),"
-				"before_after TINYINT(1) DEFAULT TRUE,"
+				"before_after INTEGER,"
 				"date TEXT NOT NULL,"
 				"color VARCHAR(255) DEFAULT NULL,"
 				"highlight VARCHAR(255) DEFAULT NULL"
