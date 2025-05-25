@@ -1,0 +1,132 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: Build Check
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-linux:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
+      fail-fast: false
+
+      # Set up a matrix to run the following 3 configurations:
+      # 1. <Windows, Release, latest MSVC compiler toolchain on the default runner image, default generator>
+      # 2. <Linux, Release, latest GCC compiler toolchain on the default runner image, default generator>
+      # 3. <Linux, Release, latest Clang compiler toolchain on the default runner image, default generator>
+      #
+      # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
+      matrix:
+        config:
+          - {
+            name: "Linux (Ubuntu) / Qt 5",
+            os: ubuntu-latest,
+            build_type: Release,
+            qt_packages: "libqt5core5a libqt5gui5 libqt5sql5 libqt5sql5-sqlite libqt5svg5 libqt5widgets5 qtbase5-dev qttools5-dev",
+            cmake_flags: "-DUSE_QT_VERSION=Qt5"
+          }
+          - {
+            name: "Linux (Ubuntu) / Qt 6",
+            os: ubuntu-latest,
+            build_type: Release,
+            qt_packages: "libqt6core6 libqt6gui6 libqt6sql6 libqt6sql6-sqlite libqt6svg6 libqt6uitools6 libqt6widgets6 qt6-base-dev qt6-tools-dev",
+            cmake_flags: "-DUSE_QT_VERSION=Qt6"
+          }
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set reusable strings
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get -y -qq update
+        sudo apt-get -y -qq --no-install-recommends install \
+          cmake \
+          git \
+          g++ \
+          ${{ matrix.config.qt_packages }}
+
+    - name: Configure CMake
+    # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+    # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }}
+        -S ${{ github.workspace }}
+
+    - name: Build
+    # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.config.build_type }}
+
+  build-windows:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
+      fail-fast: false
+
+      # Set up a matrix to run the following 3 configurations:
+      # 1. <Windows, Release, latest MSVC compiler toolchain on the default runner image, default generator>
+      # 2. <Linux, Release, latest GCC compiler toolchain on the default runner image, default generator>
+      # 3. <Linux, Release, latest Clang compiler toolchain on the default runner image, default generator>
+      #
+      # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
+      matrix:
+        config:
+          - {
+            name: "Windows / Qt 5",
+            os: windows-latest,
+            build_type: Release,
+            qt_version: "5.15.0",
+          }
+          - {
+            name: "Windows / Qt 6",
+            os: windows-latest,
+            build_type: Release,
+            qt_version: "6.8.3"
+          }
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set reusable strings
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Install Qt
+      # You may pin to the exact commit or the version.
+      # uses: jurplel/install-qt-action@12aa0336e1e410b3c6dff5e0722547f7a37e8c60
+      uses: jurplel/install-qt-action@v4.2.1
+      with:
+        version: ${{ matrix.config.qt_version }}
+
+    - name: Configure CMake
+    # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+    # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=cl
+        -DCMAKE_C_COMPILER=cl
+        -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }}
+        -S ${{ github.workspace }}
+
+    - name: Build
+    # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.config.build_type }}
